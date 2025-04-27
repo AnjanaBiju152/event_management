@@ -1,0 +1,75 @@
+/* Header.css */
+.navbar {
+  padding: 1rem 0;
+  transition: all 0.3s ease;
+}
+
+.navbar.bg-transparent {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  backdrop-filter: blur(5px);
+}
+
+.brand-text {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: white;
+  letter-spacing: 1px;
+}
+
+.nav-link {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin: 0 0.5rem;
+  position: relative;
+  color: white !important;
+}
+
+.nav-link:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: white;
+  bottom: 0;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover:after {
+  width: 100%;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* For mobile */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background-color: rgba(0, 123, 255, 0.95);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+  }
+  
+  .nav-link {
+    padding: 0.5rem 0;
+  }
+}
+/* ////////////////////////////////////// */
+
+.navbar-dark .nav-link {
+  color: white !important;
+  transition: color 0.2s ease;
+}
+.navbar-dark .nav-link:hover {
+  color: #dddddd !important;
+}
+.brand-text {
+  font-size: 1.5rem;
+  color: white;
+}

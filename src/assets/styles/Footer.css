@@ -1,0 +1,124 @@
+/* footer.css */
+
+footer {
+    background-color: #1a1a1a;
+    color: white;
+    padding: 40px 0 20px 0;
+  }
+  
+  footer h5,
+  footer h6 {
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #ffffff;
+  }
+  
+  footer a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  footer a:hover {
+    color: #ffc107; /* Bootstrap warning color */
+  }
+  
+  footer .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  footer .footer-logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .footer-icons i {
+    margin: 0 10px;
+    color: white;
+    transition: transform 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .footer-icons i:hover {
+    color: #ffc107;
+    transform: scale(1.2);
+  }
+  
+  footer hr {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  footer .copyright {
+    margin-top: 10px;
+    font-size: 0.875rem;
+    text-align: center;
+    opacity: 0.8;
+  }
+  
+  .subscribe-box input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: none;
+    margin-top: 5px;
+  }
+  
+  .subscribe-box button {
+    margin-top: 10px;
+    width: 100%;
+  }
+
+
+.footer-logo img {
+    animation: bounce 1.5s infinite;
+  }
+  
+  .footer-logo h5 {
+    color: #ffc107;
+  }
+  
+  .newsletter-form input {
+    border-radius: 0.375rem;
+  }
+  
+  .social-icons a {
+    color: white;
+    margin-right: 10px;
+    font-size: 1.4rem;
+    transition: 0.3s;
+  }
+  
+  .social-icons a:hover {
+    color: #ffc107;
+  }
+  
+  .scroll-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    border-radius: 50%;
+    padding: 10px 14px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s ease;
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(-2px);
+    }
+    50% {
+      transform: translateY(2px);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
