@@ -1,4 +1,4 @@
-// src/components/CarouselHero.jsx
+
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
 import weddingImg from '../../assets/images/carousel/wedding.jpg';

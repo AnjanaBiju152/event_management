@@ -19,7 +19,7 @@ const UserDashboard = () => (
       <Col md={9} className="p-4">
         <h2 className="fw-bold mb-4">Welcome, User!</h2>
         <p>Here you can book events, manage your bookings, and check your payments.</p>
-        {/* Later show booking details/cards here */}
+      
       </Col>
     </Row>
   </Container>

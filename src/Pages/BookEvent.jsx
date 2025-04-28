@@ -6,7 +6,7 @@ const BookEvent = () => (
     <Card className="p-4 shadow">
       <h2 className="text-center mb-4 fw-bold">Plan Your Event with Eventara</h2>
       <Form>
-        {/* Event Type */}
+        
         <Form.Group className="mb-3" controlId="formEventType">
           <Form.Label>Event Type</Form.Label>
           <Form.Select>
@@ -18,7 +18,7 @@ const BookEvent = () => (
           </Form.Select>
         </Form.Group>
 
-        {/* Flower Design */}
+        
         <Form.Group className="mb-3" controlId="formFlowerDesign">
           <Form.Label>Flower Design Preference</Form.Label>
           <Form.Select>
@@ -29,7 +29,7 @@ const BookEvent = () => (
           </Form.Select>
         </Form.Group>
 
-        {/* Photography */}
+        
         <Form.Group className="mb-3" controlId="formPhotography">
           <Form.Label>Photography Option</Form.Label>
           <Form.Select>
@@ -40,7 +40,7 @@ const BookEvent = () => (
           </Form.Select>
         </Form.Group>
 
-        {/* Catering */}
+        
         <Form.Group className="mb-3" controlId="formCatering">
           <Form.Label>Catering Style</Form.Label>
           <Form.Select>
@@ -51,7 +51,7 @@ const BookEvent = () => (
           </Form.Select>
         </Form.Group>
 
-        {/* Decoration */}
+        
         <Form.Group className="mb-3" controlId="formDecoration">
           <Form.Label>Decoration Style</Form.Label>
           <Form.Select>
@@ -62,7 +62,7 @@ const BookEvent = () => (
           </Form.Select>
         </Form.Group>
 
-        {/* Music & Entertainment */}
+  
         <Form.Group className="mb-3" controlId="formMusic">
           <Form.Label>Music & Entertainment</Form.Label>
           <Form.Select>
@@ -73,7 +73,7 @@ const BookEvent = () => (
           </Form.Select>
         </Form.Group>
 
-        {/* Destination Wedding */}
+        
         <Form.Group className="mb-3" controlId="formDestination">
           <Form.Label>Destination Wedding</Form.Label>
           <Form.Select>
@@ -83,13 +83,13 @@ const BookEvent = () => (
           </Form.Select>
         </Form.Group>
 
-        {/* Event Date */}
+        
         <Form.Group className="mb-3" controlId="formDate">
           <Form.Label>Event Date</Form.Label>
           <Form.Control type="date" />
         </Form.Group>
 
-        {/* Submit Button */}
+        
         <Button variant="success" type="submit" className="w-100">
           Submit Booking Request
         </Button>

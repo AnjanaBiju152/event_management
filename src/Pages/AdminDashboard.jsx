@@ -21,7 +21,7 @@ const AdminDashboard = () => (
       <Col md={9} className="p-4">
         <h2 className="fw-bold mb-4">Welcome, Admin!</h2>
         <p>Manage user bookings, approve payments, and send event notifications here.</p>
-        {/* Later show booking lists, approval buttons, etc */}
+        
       </Col>
     </Row>
   </Container>

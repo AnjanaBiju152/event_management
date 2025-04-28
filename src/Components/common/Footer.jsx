@@ -1,4 +1,4 @@
-// src/Components/common/Footer.jsx
+
 import React, { useState } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,7 +22,7 @@ import '../../assets/styles/Footer.css';
 const Footer = () => {
   const [showScroll, setShowScroll] = useState(false);
 
-  // Scroll-to-top logic
+  
   const handleScroll = () => {
     if (window.scrollY > 300) {
       setShowScroll(true);
@@ -73,7 +73,7 @@ const Footer = () => {
             <h6 className="fw-bold mb-3">Contact Us</h6>
             <p><FontAwesomeIcon icon={faEnvelope} className="me-2" /> support@eventara.com</p>
             <p><FontAwesomeIcon icon={faPhone} className="me-2" /> +91 98765 43210</p>
-            <p><FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" /> Chennai, India</p>
+            <p><FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" /> kerala, India</p>
           </Col>
         </Row>
 

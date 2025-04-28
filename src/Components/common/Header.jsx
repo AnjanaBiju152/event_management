@@ -1,4 +1,4 @@
-// src/components/Header.jsx
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Container, Nav, Button, Image } from 'react-bootstrap';
@@ -15,7 +15,7 @@ const Header = ({ isTransparent = true }) => (
     style={{ transition: 'background-color 0.3s ease' }}
   >
     <Container>
-      {/* Logo + Brand */}
+    
       <Navbar.Brand as={Link} to="/" className="fw-bold d-flex align-items-center text-white">
         <Image
           src={Icon}
@@ -29,17 +29,16 @@ const Header = ({ isTransparent = true }) => (
 
       <Navbar.Toggle aria-controls="navbar-nav" />
       <Navbar.Collapse id="navbar-nav">
-        {/* Navigation */}
+        
         <Nav className="mx-auto">
           <Nav.Link as={Link} to="/" className="text-white">Home</Nav.Link>
-          <Nav.Link as={Link} to="/about-us" className="text-white">About Us</Nav.Link>
-          <Nav.Link as={Link} to="/services" className="text-white">Services</Nav.Link>
-          <Nav.Link as={Link} to="/venues" className="text-white">Theme</Nav.Link>
+          <Nav.Link as={Link} to="/about" className="text-white">About Us</Nav.Link>
+          <Nav.Link as={Link} to="/eventsection" className="text-white">Services</Nav.Link>
           <Nav.Link as={Link} to="/gallery" className="text-white">Gallery</Nav.Link>
           <Nav.Link as={Link} to="/contact" className="text-white">Contact Us</Nav.Link>
         </Nav>
 
-        {/* Auth Buttons */}
+        
         <div className="d-flex gap-2">
           <Button as={Link} to="/login" variant="outline-light" size="sm">
             <FontAwesomeIcon icon={faSignInAlt} className="me-2" />

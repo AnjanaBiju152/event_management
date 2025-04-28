@@ -18,6 +18,8 @@ import AdminPayment from "./Pages/AdminPayment"
 import AdminHome from "./Pages/AdminHome"
 import AdminAlert from "./Pages/AdminAlert"
 import AdminProfile from "./Pages/AdminProfile"
+import Gallery from "./Components/common/Gallery"
+import GalleryPage from "./Pages/GalleryPage"
 
 function App() {
   return (
@@ -31,9 +33,12 @@ function App() {
             <EventSection />
             <SubServicesSection />
             <ReviewsSection />
+            <Gallery/>
             <About />
           </>
         } />
+        <Route path="/gallery" element={<GalleryPage />} />
+
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/user/dashboard" element={<UserDashboard/>} />
