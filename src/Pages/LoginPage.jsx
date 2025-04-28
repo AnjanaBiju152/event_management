@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Form, Button, Card } from 'react-bootstrap';
 
 const LoginPage = () => (
-  <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
+  <Container className="d-flex justify-content-center align-items-center " style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
     <Card className="p-4 shadow" style={{ width: '400px' }}>
       <h2 className="text-center mb-4 fw-bold">Login to Eventara</h2>
       <Form>

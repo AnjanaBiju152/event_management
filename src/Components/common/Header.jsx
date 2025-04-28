@@ -33,8 +33,9 @@ const Header = ({ isTransparent = true }) => (
         <Nav className="mx-auto">
           <Nav.Link as={Link} to="/" className="text-white">Home</Nav.Link>
           <Nav.Link as={Link} to="/about" className="text-white">About Us</Nav.Link>
-          <Nav.Link as={Link} to="/eventsection" className="text-white">Services</Nav.Link>
+          <Nav.Link as={Link} to="/services" className="text-white">Services</Nav.Link>
           <Nav.Link as={Link} to="/gallery" className="text-white">Gallery</Nav.Link>
+          <Nav.Link as={Link} to="/review" className="text-white">Reviews</Nav.Link>
           <Nav.Link as={Link} to="/contact" className="text-white">Contact Us</Nav.Link>
         </Nav>
 

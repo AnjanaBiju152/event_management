@@ -5,7 +5,7 @@ import Carousels from "./Components/common/Carousels"
 import EventSection from "./Components/common/EventSection"
 import SubServicesSection from "./Components/common/SubServiceSection"
 import ReviewsSection from "./Components/common/ReviewsSection"
-import About from "./Components/common/About"
+
 import LoginPage from "./Pages/LoginPage"
 import RegisterPage from "./Pages/RegistrationPage"
 import UserDashboard from "./Pages/UserDashboard"
@@ -18,8 +18,14 @@ import AdminPayment from "./Pages/AdminPayment"
 import AdminHome from "./Pages/AdminHome"
 import AdminAlert from "./Pages/AdminAlert"
 import AdminProfile from "./Pages/AdminProfile"
-import Gallery from "./Components/common/Gallery"
+
 import GalleryPage from "./Pages/GalleryPage"
+import UserProfile from "./Pages/UserProfile"
+import About from "./Pages/About"
+import AboutUs from "./Components/common/AboutUs"
+import Services from "./Pages/Services"
+import Contact from "./Pages/Contact"
+import Review from "./Pages/Review"
 
 function App() {
   return (
@@ -33,12 +39,15 @@ function App() {
             <EventSection />
             <SubServicesSection />
             <ReviewsSection />
-            <Gallery/>
-            <About />
+            
+            <AboutUs />
           </>
         } />
         <Route path="/gallery" element={<GalleryPage />} />
-
+        <Route path="/review" element={<Review/>} />
+        <Route path="/contact" element={<Contact/>} />
+        <Route path="/about" element={<About/>} />
+        <Route path="/services" element={<Services/>} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/user/dashboard" element={<UserDashboard/>} />
@@ -51,7 +60,7 @@ function App() {
         <Route path="/admin/dashboard" element={<AdminHome />} />
         <Route path="/admin/alerts" element={<AdminAlert />} />
         <Route path="/admin/profile" element={<AdminProfile />} />
-
+        <Route path="/user/profile" element={<UserProfile />} />
        
 
 
