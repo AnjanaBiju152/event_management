@@ -11,7 +11,7 @@ const userLinks = [
 ];
 
 const UserDashboard = () => (
-  <Container fluid className="p-0"  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
+  <Container fluid className="p-0"  style={{ minHeight: '80vh' ,marginTop:'86px'  }}>
     <Row noGutters="true">
       <Col md={3}>
         <Sidebar links={userLinks} />

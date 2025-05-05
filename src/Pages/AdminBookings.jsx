@@ -26,7 +26,7 @@ const dummyAdminBookings = [
 ];
 
 const AdminBookings = () => (
-  <Container className="py-5"  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
+  <Container className="py-5"  style={{ minHeight: '80vh' ,marginTop:'86px'}}>
     <h2 className="fw-bold mb-4 text-center">Manage Bookings</h2>
     <Table striped bordered hover responsive className="shadow-sm">
       <thead className="table-dark">

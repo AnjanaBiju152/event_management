@@ -3,7 +3,7 @@ import { Container, Form, Button } from 'react-bootstrap';
 
 const AdminAlert = () => {
   return (
-    <Container className="py-5"  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
+    <Container className="py-5"  style={{ minHeight: '80vh' ,marginTop:'86px'}}>
       <h2 className="fw-bold mb-4 text-center">Send Alerts to Users </h2>
 
       <Form className="shadow-sm p-4 bg-light rounded">

@@ -4,7 +4,7 @@ import { FaUserCircle } from "react-icons/fa";
 
 const UserProfile = () => {
   return (
-    <Container className="py-5"  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
+    <Container className="py-5"  style={{ minHeight: '80vh' ,marginTop:'86px' }}>
       <Row className="justify-content-center">
         <Col md={6}>
           <Card className="text-center shadow p-4">

@@ -26,7 +26,7 @@ const dummyBookings = [
 ];
 
 const MyBookings = () => (
-  <Container className="py-5"  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
+  <Container className="py-5"  style={{ minHeight: '80vh',marginTop:'86px'}}>
     <h2 className="fw-bold mb-4 text-center">My Bookings</h2>
     <Row className="g-4">
       {dummyBookings.map((booking) => (

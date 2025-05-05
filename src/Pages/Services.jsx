@@ -27,7 +27,7 @@ const Services = () => {
       description: 'From intimate ceremonies to grand celebrations, we create the perfect wedding experience tailored to your dreams.',
       icon: faRing,
       link: '/register',
-      image: '/public/beachwedding.jpg"'
+      image: '/wedding.jpg'
     },
     {
       id: 2,
@@ -35,7 +35,7 @@ const Services = () => {
       description: 'Celebrate another year with custom-designed birthday events for kids, teens, adults, and milestone celebrations.',
       icon: faBirthdayCake,
       link: '/register',
-      image: '../assets/images/gallery/birthday2.jpg'
+      image: '/birthday2.jpg'
     },
     {
       id: 3,
@@ -43,7 +43,7 @@ const Services = () => {
       description: 'Impress clients and motivate teams with professionally planned corporate gatherings, conferences, and team-building events.',
       icon: faBuilding,
       link: '/register',
-      image: '../assets/images/gallery/conference.jpg'
+      image: '/coperative.jpg'
     },
     {
       id: 4,
@@ -51,7 +51,7 @@ const Services = () => {
       description: 'Host memorable social events from family reunions to holiday parties with our comprehensive planning services.',
       icon: faGlassCheers,
       link: '/register',
-      image: '../assets/images/gallery/privateparty.jpg'
+      image: '/conference.jpg'
     },
     {
       id: 5,
@@ -59,7 +59,7 @@ const Services = () => {
       description: 'Celebrate academic achievements with custom graduation events that mark this important milestone.',
       icon: faGraduationCap,
       link: '/register',
-      image: '../assets/images/gallery/graduation.jpg'
+      image: '/graduation.jpg'
     },
     {
       id: 6,
@@ -67,7 +67,7 @@ const Services = () => {
       description: 'Begin your journey to marriage with a beautifully planned engagement celebration.',
       icon: faHandshake,
       link: '/register',
-      image: '../assets/images/gallery/engagement.jpg'
+      image: '/engagement.jpg'
     }
   ];
 
