@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Form, Button, Card, Row, Col } from 'react-bootstrap';
 
 const BookEvent = () => (
-  <Container className="py-5">
+  <Container className="py-5" style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
     <Card className="p-4 shadow">
       <h2 className="text-center mb-4 fw-bold">Plan Your Event with Eventara</h2>
       <Form>

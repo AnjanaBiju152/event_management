@@ -41,7 +41,7 @@ const About = () => {
 
   return (
     <section className="about-section py-5">
-      <Container>
+      <Container  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
         <Row className="align-items-center">
           <Col lg={6} className="mb-4 mb-lg-0">
             <div className="about-image-wrapper">

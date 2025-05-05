@@ -3,7 +3,7 @@ import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 
 const AdminProfile = () => {
   return (
-    <Container className="py-5">
+    <Container className="py-5"  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
       <h2 className="fw-bold text-center mb-4">Admin Profile 👤</h2>
 
       <Row className="justify-content-center">

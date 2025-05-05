@@ -29,7 +29,7 @@ const dummyPayments = [
 ];
 
 const PaymentPage = () => (
-  <Container className="py-5">
+  <Container className="py-5"  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
     <h2 className="fw-bold mb-4 text-center">Payments</h2>
     <Table striped bordered hover responsive className="shadow-sm">
       <thead className="table-dark">

@@ -67,7 +67,7 @@ const Review = () => {
 
   return (
     <section className="customer-reviews-section py-5">
-      <Container>
+      <Container  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
         <div className="text-center mb-5">
           <h2 className="section-title">What Our Clients Say</h2>
           <p className="section-subtitle text-muted">

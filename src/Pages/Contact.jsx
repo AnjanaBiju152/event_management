@@ -9,7 +9,7 @@ const Contact = () => {
   return (
     <section className="cta-section py-5">
       <div className="cta-overlay"></div>
-      <Container className="position-relative">
+      <Container className="position-relative"  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
         <Row className="justify-content-center text-center">
           <Col lg={8}>
             <div className="cta-content text-white">

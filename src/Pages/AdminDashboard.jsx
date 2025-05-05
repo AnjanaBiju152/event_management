@@ -14,7 +14,7 @@ const adminLinks = [
 ];
 
 const AdminDashboard = () => (
-  <Container fluid className="p-0">
+  <Container fluid className="p-0"  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
     <Row noGutters="true">
       <Col md={3}>
         <Sidebar links={adminLinks} />

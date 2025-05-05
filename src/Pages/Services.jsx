@@ -26,48 +26,48 @@ const Services = () => {
       title: 'Wedding Events',
       description: 'From intimate ceremonies to grand celebrations, we create the perfect wedding experience tailored to your dreams.',
       icon: faRing,
-      link: '/services/wedding',
-      image: '/assets/images/wedding-thumb.jpg'
+      link: '/register',
+      image: '/public/beachwedding.jpg"'
     },
     {
       id: 2,
       title: 'Birthday Parties',
       description: 'Celebrate another year with custom-designed birthday events for kids, teens, adults, and milestone celebrations.',
       icon: faBirthdayCake,
-      link: '/services/birthday',
-      image: '/assets/images/birthday-thumb.jpg'
+      link: '/register',
+      image: '../assets/images/gallery/birthday2.jpg'
     },
     {
       id: 3,
       title: 'Corporate Events',
       description: 'Impress clients and motivate teams with professionally planned corporate gatherings, conferences, and team-building events.',
       icon: faBuilding,
-      link: '/services/corporate',
-      image: '/assets/images/corporate-thumb.jpg'
+      link: '/register',
+      image: '../assets/images/gallery/conference.jpg'
     },
     {
       id: 4,
       title: 'Social Gatherings',
       description: 'Host memorable social events from family reunions to holiday parties with our comprehensive planning services.',
       icon: faGlassCheers,
-      link: '/services/social',
-      image: '/assets/images/social-thumb.jpg'
+      link: '/register',
+      image: '../assets/images/gallery/privateparty.jpg'
     },
     {
       id: 5,
       title: 'Graduation Parties',
       description: 'Celebrate academic achievements with custom graduation events that mark this important milestone.',
       icon: faGraduationCap,
-      link: '/services/graduation',
-      image: '/assets/images/graduation-thumb.jpg'
+      link: '/register',
+      image: '../assets/images/gallery/graduation.jpg'
     },
     {
       id: 6,
       title: 'Engagement Parties',
       description: 'Begin your journey to marriage with a beautifully planned engagement celebration.',
       icon: faHandshake,
-      link: '/services/engagement',
-      image: '/assets/images/engagement-thumb.jpg'
+      link: '/register',
+      image: '../assets/images/gallery/engagement.jpg'
     }
   ];
 
@@ -77,50 +77,50 @@ const Services = () => {
       title: 'Catering Services',
       description: 'Exquisite culinary experiences tailored to your event and preferences.',
       icon: faUtensils,
-      link: '/services/catering'
+      link: '/register'
     },
     {
       id: 2,
       title: 'Photography & Videography',
       description: 'Capture every special moment with our professional media team.',
       icon: faCamera,
-      link: '/services/photography'
+      link: '/register'
     },
     {
       id: 3,
       title: 'Music & Entertainment',
       description: 'From DJs to live bands, we provide entertainment that keeps guests engaged.',
       icon: faMusic,
-      link: '/services/entertainment'
+      link: '/register'
     },
     {
       id: 4,
       title: 'Decoration & Design',
       description: 'Transform venues with our custom design and decoration services.',
       icon: faPalette,
-      link: '/services/decor'
+      link: '/register'
     },
     {
       id: 5,
       title: 'Destination Events',
       description: 'Plan your dream event at exotic locations worldwide.',
       icon: faMapMarkedAlt,
-      link: '/services/destination'
+      link: '/register'
     },
     {
       id: 6,
       title: 'Beach Weddings',
       description: 'Say "I do" with the perfect beachfront ceremony and reception.',
       icon: faUmbrellaBeach,
-      link: '/services/beach-wedding'
+      link: '/register'
     }
   ];
 
   return (
     <>
       {/* Main Services Section */}
-      <section className="main-services-section py-5">
-        <Container>
+      <section className="main-services-section py-5" >
+        <Container  style={{ minHeight: '80vh' ,paddingTop:'100px' ,paddingBottom:'40px' }}>
           <div className="text-center mb-5">
             <h2 className="section-title">Our Event Services</h2>
             <p className="section-subtitle text-muted">
