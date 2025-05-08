@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearchPlus } from '@fortawesome/free-solid-svg-icons';
-import '../assets/styles/About.css';
+import '../assets/styles/gallery.css';
 
 const GalleryPage = () => {
   const [filter, setFilter] = useState('all');
