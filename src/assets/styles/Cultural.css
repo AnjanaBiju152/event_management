@@ -1,0 +1,277 @@
+/* cultural.css - Completely redesigned styles for the CulturalCustomization component */
+
+/* Main container styling */
+.cultural-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #333;
+}
+
+/* Modern section headers with gradient accents */
+.section-title {
+  color: #2d3748;
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  border-radius: 4px;
+}
+
+.section-description {
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  max-width: 720px;
+}
+
+.subsection-title {
+  color: #4b5563;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+/* Cultural option cards - modern flat design */
+.cultural-options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.cultural-option-card {
+  flex: 0 0 100%;
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: none;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .cultural-option-card {
+    flex: 0 0 calc(50% - 0.75rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cultural-option-card {
+    flex: 0 0 calc(33.333% - 1rem);
+  }
+}
+
+.cultural-option-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.cultural-option-card.selected {
+  box-shadow: 0 0 0 2px #8b5cf6, 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Card image styling */
+.cultural-option-image-container {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
+
+.cultural-option-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+}
+
+.cultural-option-card:hover .cultural-option-image {
+  transform: scale(1.05);
+}
+
+/* Card overlay gradient */
+.cultural-option-image-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
+  pointer-events: none;
+}
+
+.cultural-option-content {
+  padding: 1.25rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.cultural-option-title {
+  color: #1a202c;
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.cultural-option-description {
+  color: #4b5563;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Selection styles */
+.cultural-option-card.selected {
+  position: relative;
+  background-color: #f9f7ff;
+}
+
+.selected-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #8b5cf6;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  z-index: 5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Cultural notes section */
+.cultural-notes-container {
+  margin-top: 3rem;
+  background-color: #f8fafc;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.cultural-notes-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.cultural-notes-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2d3748;
+  letter-spacing: -0.01em;
+}
+
+.cultural-notes-icon {
+  color: #8b5cf6;
+}
+
+.cultural-notes-description {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.cultural-notes-textarea {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-size: 0.875rem;
+  resize: vertical;
+  min-height: 8rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background-color: white;
+}
+
+.cultural-notes-textarea:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+.cultural-notes-textarea::placeholder {
+  color: #a0aec0;
+}
+
+/* Notification box for fusion events */
+.fusion-notification {
+  background-color: #f3f0ff;
+  border-left: 4px solid #8b5cf6;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-top: 2rem;
+}
+
+.fusion-notification-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6b46c1;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fusion-notification-text {
+  font-size: 0.875rem;
+  color: #5a4a8c;
+  line-height: 1.6;
+}
+
+/* Empty state */
+.empty-state {
+  padding: 4rem 2rem;
+  text-align: center;
+  background-color: #f9fafb;
+  border-radius: 0.75rem;
+  border: 2px dashed #e2e8f0;
+}
+
+.empty-state-text {
+  color: #6b7280;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .cultural-option-card,
+  .cultural-option-card:hover,
+  .cultural-option-image,
+  .cultural-option-card:hover .cultural-option-image {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Focus styles for keyboard navigation */
+.cultural-option-card:focus-visible {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}

@@ -1,0 +1,276 @@
+/* food.css - Styles for food catering components */
+
+/* Base styling for food sections */
+.food-section {
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  background-color: #fcfcfc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Food item cards */
+.cuisine-card {
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cuisine-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.cuisine-card.selected {
+  border-color: #4f46e5;
+  background-color: rgba(79, 70, 229, 0.05);
+}
+
+.cuisine-card.recommended {
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);
+}
+
+/* Food icons and imagery */
+.food-icon {
+  color: #4b5563;
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.cuisine-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+}
+
+/* Menu styling */
+.menu-section {
+  border-left: 3px solid #4f46e5;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.menu-item-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.menu-item-price {
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+.menu-description {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+/* Dietary indicator badges */
+.dietary-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.dietary-badge-veg {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.dietary-badge-vegan {
+  background-color: #a7f3d0;
+  color: #065f46;
+}
+
+.dietary-badge-gf {
+  background-color: #e0e7ff;
+  color: #4338ca;
+}
+
+.dietary-badge-df {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.dietary-badge-nut-free {
+  background-color: #ddd6fe;
+  color: #5b21b6;
+}
+
+.dietary-badge-halal {
+  background-color: #bfdbfe;
+  color: #1e40af;
+}
+
+.dietary-badge-kosher {
+  background-color: #c7d2fe;
+  color: #3730a3;
+}
+
+/* Service style indicators */
+.service-style-card {
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 1.25rem;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.service-style-card:hover {
+  background-color: #f9fafb;
+}
+
+.service-style-card.selected {
+  border-color: #4f46e5;
+  background-color: rgba(79, 70, 229, 0.05);
+}
+
+.service-style-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #f3f4f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.selected .service-style-icon {
+  background-color: #4f46e5;
+  color: white;
+}
+
+/* Food quantity inputs */
+.quantity-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.quantity-btn {
+  background-color: #f3f4f6;
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quantity-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.quantity-input {
+  width: 3rem;
+  text-align: center;
+  border: none;
+  font-weight: 500;
+}
+
+/* Food option toggles */
+.food-option-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 3rem;
+  height: 1.5rem;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  transition: all 0.3s;
+  margin-right: 0.75rem;
+}
+
+.toggle-switch.active {
+  background-color: #4f46e5;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 0.2rem;
+  left: 0.2rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  background-color: white;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.toggle-switch.active .toggle-slider {
+  transform: translateX(1.5rem);
+}
+
+/* Alert boxes for dietary notifications */
+.dietary-alert {
+  background-color: #fff3cd;
+  color: #856404;
+  border-left: 4px solid #ffeeba;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+}
+
+/* Special section for custom menu */
+.custom-menu-section {
+  background-color: #f8fafc;
+  border: 1px dashed #94a3b8;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.custom-menu-section h4 {
+  color: #475569;
+  margin-bottom: 1rem;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .food-section {
+    padding: 1rem;
+  }
+  
+  .cuisine-card {
+    margin-bottom: 1rem;
+  }
+  
+  .service-style-card {
+    margin-bottom: 1rem;
+  }
+  
+  .menu-item {
+    flex-direction: column;
+  }
+  
+  .menu-item-price {
+    margin-top: 0.25rem;
+  }
+}
