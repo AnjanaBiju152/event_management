@@ -235,7 +235,7 @@ export default function BookEvent() {
               onClick={nextStep}
               className="flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
             >
-              {currentStep === totalSteps ? 'Submit Request' : 'Next'}
+              {currentStep === totalSteps ? 'Request' : 'Next'}
               {currentStep !== totalSteps && <ChevronRight className="w-4 h-4 ml-2" />}
             </button>
           </div>

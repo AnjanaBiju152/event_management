@@ -2,254 +2,211 @@
 
 /* Base styling for food sections */
 .food-section {
-  padding: 2rem;
-  margin-bottom: 1.5rem;
-  border-radius: 8px;
-  background-color: #fcfcfc;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background-color: #ffffff;
 }
 
-/* Food item cards */
-.cuisine-card {
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  padding: 1rem;
+/* Section titles */
+.section-title {
+  color: #1a202c;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.section-subtitle {
+  color: #718096;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Cards (cuisine, dietary, service style) */
+.cuisine-card, .dietary-card, .service-style-card {
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  padding: 1.5rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
+  background-color: #fff;
+  min-height: 150px; /* Ensure consistent card height */
 }
 
-.cuisine-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.cuisine-card:hover, .dietary-card:hover, .service-style-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  background-color: #f7fafc;
 }
 
-.cuisine-card.selected {
-  border-color: #4f46e5;
-  background-color: rgba(79, 70, 229, 0.05);
+.cuisine-card.selected, .dietary-card.selected, .service-style-card.selected {
+  border-color: #3b82f6;
+  background-color: #f0f7ff;
 }
 
+/* Recommended cuisine highlight */
 .cuisine-card.recommended {
-  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 0 0 2px #f59e0b;
 }
 
-/* Food icons and imagery */
+/* Card content */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.card-description {
+  font-size: 0.875rem;
+  color: #718096;
+  line-height: 1.5;
+}
+
+/* Example dishes */
+.example-dishes {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  max-height: 80px; /* Prevent overflow */
+  overflow-y: auto;
+}
+
+.example-dish {
+  font-size: 0.85rem;
+  color: #4a5568;
+  line-height: 1.4;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.example-dish:before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #718096;
+}
+
+/* Food icons */
 .food-icon {
   color: #4b5563;
-  margin-right: 0.75rem;
-  font-size: 1.25rem;
-}
-
-.cuisine-image {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 0.75rem;
-}
-
-/* Menu styling */
-.menu-section {
-  border-left: 3px solid #4f46e5;
-  padding-left: 1rem;
-  margin: 1.5rem 0;
-}
-
-.menu-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem 0;
-  border-bottom: 1px dashed #e5e7eb;
-}
-
-.menu-item-name {
-  font-weight: 500;
-  color: #1f2937;
-}
-
-.menu-item-price {
-  font-weight: 600;
-  color: #4f46e5;
-}
-
-.menu-description {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin-top: 0.25rem;
-}
-
-/* Dietary indicator badges */
-.dietary-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.25rem 0.5rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin-right: 0.5rem;
+  font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
-.dietary-badge-veg {
-  background-color: #d1fae5;
-  color: #065f46;
-}
-
-.dietary-badge-vegan {
-  background-color: #a7f3d0;
-  color: #065f46;
-}
-
-.dietary-badge-gf {
-  background-color: #e0e7ff;
-  color: #4338ca;
-}
-
-.dietary-badge-df {
-  background-color: #fef3c7;
-  color: #92400e;
-}
-
-.dietary-badge-nut-free {
-  background-color: #ddd6fe;
-  color: #5b21b6;
-}
-
-.dietary-badge-halal {
-  background-color: #bfdbfe;
-  color: #1e40af;
-}
-
-.dietary-badge-kosher {
-  background-color: #c7d2fe;
-  color: #3730a3;
-}
-
-/* Service style indicators */
-.service-style-card {
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  padding: 1.25rem;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-.service-style-card:hover {
-  background-color: #f9fafb;
-}
-
-.service-style-card.selected {
-  border-color: #4f46e5;
-  background-color: rgba(79, 70, 229, 0.05);
-}
-
-.service-style-icon {
-  width: 40px;
-  height: 40px;
-  background-color: #f3f4f6;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.75rem;
-}
-
-.selected .service-style-icon {
-  background-color: #4f46e5;
-  color: white;
-}
-
-/* Food quantity inputs */
-.quantity-control {
-  display: flex;
-  align-items: center;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.quantity-btn {
-  background-color: #f3f4f6;
-  border: none;
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.quantity-btn:hover {
-  background-color: #e5e7eb;
-}
-
-.quantity-input {
-  width: 3rem;
-  text-align: center;
-  border: none;
-  font-weight: 500;
-}
-
-/* Food option toggles */
-.food-option-toggle {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.75rem;
-}
-
-.toggle-switch {
-  position: relative;
-  width: 3rem;
-  height: 1.5rem;
-  background-color: #e5e7eb;
-  border-radius: 9999px;
-  transition: all 0.3s;
-  margin-right: 0.75rem;
-}
-
-.toggle-switch.active {
-  background-color: #4f46e5;
-}
-
-.toggle-slider {
+/* Recommended badge */
+.recommended-badge {
   position: absolute;
-  top: 0.2rem;
-  left: 0.2rem;
-  width: 1.1rem;
-  height: 1.1rem;
-  background-color: white;
-  border-radius: 50%;
-  transition: all 0.3s;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  background-color: #fefcbf;
+  color: #b7791f;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
 }
 
-.toggle-switch.active .toggle-slider {
-  transform: translateX(1.5rem);
+/* Customization input */
+.customization-input {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  width: 100%;
+  font-size: 0.875rem;
+  color: #1a202c;
+  background-color: #f7fafc;
+  transition: border-color 0.2s ease-in-out;
 }
 
-/* Alert boxes for dietary notifications */
+.customization-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.customization-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1a202c;
+  margin-bottom: 0.25rem;
+}
+
+/* Dietary alert */
 .dietary-alert {
   background-color: #fff3cd;
   color: #856404;
   border-left: 4px solid #ffeeba;
   padding: 1rem;
-  margin: 1rem 0;
+  margin: 1.5rem 0;
   border-radius: 6px;
+  display: flex;
+  align-items: start;
 }
 
-/* Special section for custom menu */
-.custom-menu-section {
-  background-color: #f8fafc;
-  border: 1px dashed #94a3b8;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-top: 1.5rem;
+.alert-icon {
+  margin-right: 0.75rem;
+  flex-shrink: 0;
 }
 
-.custom-menu-section h4 {
-  color: #475569;
-  margin-bottom: 1rem;
+/* Animations */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+.cuisine-card.selected, .dietary-card.selected, .service-style-card.selected {
+  animation: pulse 2s infinite;
+}
+
+/* SelectionIndicator styles */
+.selection-indicator-check-circle {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+}
+
+/* Color overrides for SelectionIndicator */
+.bg-blue-500 { background-color: #3b82f6; }
+.border-blue-500 { border-color: #3b82f6; }
+.text-blue-500 { color: #3b82f6; }
+
+/* Responsive grids */
+.cuisine-grid, .dietary-grid, .service-style-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .cuisine-grid, .dietary-grid, .service-style-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cuisine-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .dietary-grid, .service-style-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* Mobile responsive adjustments */
@@ -257,20 +214,12 @@
   .food-section {
     padding: 1rem;
   }
-  
-  .cuisine-card {
+
+  .cuisine-card, .dietary-card, .service-style-card {
     margin-bottom: 1rem;
   }
-  
-  .service-style-card {
-    margin-bottom: 1rem;
-  }
-  
-  .menu-item {
-    flex-direction: column;
-  }
-  
-  .menu-item-price {
-    margin-top: 0.25rem;
+
+  .example-dish {
+    font-size: 0.8rem;
   }
 }

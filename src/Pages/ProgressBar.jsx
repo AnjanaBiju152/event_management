@@ -8,7 +8,7 @@ export default function ProgressBar({ currentStep, totalSteps }) {
     { number: 4, name: 'Services' },
     { number: 5, name: 'Food & Catering' },
     { number: 6, name: 'Additional Services' },
-    
+    {number: 6, name: 'Review'}
   ];
   
   return (

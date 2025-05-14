@@ -26,6 +26,7 @@ import AboutUs from "./Components/common/AboutUs"
 import Services from "./Pages/Services"
 import Contact from "./Pages/Contact"
 import Review from "./Pages/Review"
+import AdminBookingDetail from "./Pages/AdminBookingDetail"
 
 function App() {
   return (
@@ -61,6 +62,7 @@ function App() {
         <Route path="/admin/alerts" element={<AdminAlert />} />
         <Route path="/admin/profile" element={<AdminProfile />} />
         <Route path="/user/profile" element={<UserProfile />} />
+      
        
 
 

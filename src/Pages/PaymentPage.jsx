@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Table, Button, Badge, Modal, Form, Row, Col } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { jsPDF } from 'jspdf';
 
 const dummyPayments = [
   {
@@ -16,9 +17,9 @@ const dummyPayments = [
     id: 2,
     eventType: 'Birthday Party',
     eventDate: '2025-10-05',
-    totalAmount: 30000,
+    totalAmount: 0,
     paidAmount: 0,
-    dueAmount: 30000,
+    dueAmount: 0,
     status: 'Pending',
   },
   {
@@ -38,63 +39,73 @@ const PaymentPage = () => {
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('upi');
   const [paymentAmount, setPaymentAmount] = useState(0);
-  
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Check if there's any booking data passed through navigation
   useEffect(() => {
-    if (location.state?.selectedBooking) {
-      const booking = location.state.selectedBooking;
-      
-      // Find if this booking already exists in our payments list
-      const existingPaymentIndex = payments.findIndex(p => p.id === booking.id);
-      
-      if (existingPaymentIndex >= 0) {
-        // Select the existing payment for immediate payment
-        handlePayNow(payments[existingPaymentIndex]);
+    const queryParams = new URLSearchParams(location.search);
+    const bookingId = queryParams.get('bookingId');
+    if (bookingId) {
+      const payment = payments.find((p) => p.id === parseInt(bookingId));
+      if (payment && payment.dueAmount > 0) {
+        handlePayNow(payment);
       }
     }
-  }, [location.state]);
+  }, [location.search, payments]);
 
   const handlePayNow = (payment) => {
     setSelectedPayment(payment);
-    setPaymentAmount(payment.dueAmount);
+    setPaymentAmount(payment.dueAmount * 0.5); // Default to 50% of due amount
+    setPaymentMethod('upi');
     setShowPayModal(true);
   };
 
   const handleCloseModal = () => {
     setShowPayModal(false);
+    setSelectedPayment(null);
+    setPaymentAmount(0);
+  };
+
+  const generateReceipt = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text('Eventara Payment Receipt', 20, 20);
+    doc.setFontSize(12);
+    doc.text(`Payment ID: ${selectedPayment.id}`, 20, 30);
+    doc.text(`Event: ${selectedPayment.eventType}`, 20, 40);
+    doc.text(`Date: ${selectedPayment.eventDate}`, 20, 50);
+    doc.text(`Amount Paid: ₹${paymentAmount.toLocaleString()}`, 20, 60);
+    doc.text(`Payment Method: ${paymentMethod.toUpperCase()}`, 20, 70);
+    doc.text(`Transaction Date: ${new Date().toLocaleString()}`, 20, 80);
+    doc.text(`Remaining Balance: ₹${(selectedPayment.dueAmount - paymentAmount).toLocaleString()}`, 20, 90);
+    doc.save(`receipt_${selectedPayment.id}_${Date.now()}.pdf`);
   };
 
   const handleCompletePayment = () => {
-    // Update payment status
-    const updatedPayments = payments.map(payment => {
+    const updatedPayments = payments.map((payment) => {
       if (payment.id === selectedPayment.id) {
         const newPaidAmount = payment.paidAmount + parseInt(paymentAmount);
         const newDueAmount = payment.totalAmount - newPaidAmount;
-        
         let newStatus = 'Pending';
         if (newDueAmount === 0) {
           newStatus = 'Fully Paid';
         } else if (newPaidAmount > 0) {
           newStatus = 'Half Paid';
         }
-        
         return {
           ...payment,
           paidAmount: newPaidAmount,
           dueAmount: newDueAmount,
-          status: newStatus
+          status: newStatus,
         };
       }
       return payment;
     });
-    
     setPayments(updatedPayments);
-    setShowPayModal(false);
-    
-    // Show success message (you might want to replace with a proper toast notification)
-    alert('Payment successful!');
+    generateReceipt();
+    alert(`Payment of ₹${paymentAmount.toLocaleString()} successful! Receipt downloaded.`);
+    handleCloseModal();
+    navigate('/user/bookings'); // Redirect back to MyBookings
   };
 
   return (
@@ -105,6 +116,7 @@ const PaymentPage = () => {
           <tr>
             <th>#</th>
             <th>Event Type</th>
+            <th>Event Date</th>
             <th>Total Amount</th>
             <th>Paid Amount</th>
             <th>Due Amount</th>
@@ -117,22 +129,27 @@ const PaymentPage = () => {
             <tr key={payment.id}>
               <td>{index + 1}</td>
               <td>{payment.eventType}</td>
-              <td>₹{payment.totalAmount}</td>
-              <td>₹{payment.paidAmount}</td>
-              <td>₹{payment.dueAmount}</td>
+              <td>{payment.eventDate}</td>
+              <td>₹{payment.totalAmount.toLocaleString()}</td>
+              <td>₹{payment.paidAmount.toLocaleString()}</td>
+              <td>₹{payment.dueAmount.toLocaleString()}</td>
               <td>
-                <Badge bg={
-                  payment.status === 'Half Paid' ? 'info' :
-                  payment.status === 'Pending' ? 'warning' :
-                  'success'
-                }>
+                <Badge
+                  bg={
+                    payment.status === 'Fully Paid'
+                      ? 'success'
+                      : payment.status === 'Half Paid'
+                        ? 'info'
+                        : 'warning'
+                  }
+                >
                   {payment.status}
                 </Badge>
               </td>
               <td>
                 {payment.dueAmount > 0 ? (
-                  <Button 
-                    variant="success" 
+                  <Button
+                    variant="success"
                     size="sm"
                     onClick={() => handlePayNow(payment)}
                   >
@@ -147,13 +164,12 @@ const PaymentPage = () => {
         </tbody>
       </Table>
 
-      {/* Payment Modal */}
-      <Modal show={showPayModal} onHide={handleCloseModal}>
+      <Modal show={showPayModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Complete Payment</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {selectedPayment && (
+          {selectedPayment ? (
             <>
               <div className="mb-4">
                 <h5>{selectedPayment.eventType}</h5>
@@ -161,28 +177,30 @@ const PaymentPage = () => {
                 <hr />
                 <Row>
                   <Col><strong>Total Amount:</strong></Col>
-                  <Col className="text-end">₹{selectedPayment.totalAmount}</Col>
+                  <Col className="text-end">₹{selectedPayment.totalAmount.toLocaleString()}</Col>
                 </Row>
                 <Row>
                   <Col><strong>Already Paid:</strong></Col>
-                  <Col className="text-end">₹{selectedPayment.paidAmount}</Col>
+                  <Col className="text-end">₹{selectedPayment.paidAmount.toLocaleString()}</Col>
                 </Row>
                 <Row className="mb-3">
                   <Col><strong>Due Amount:</strong></Col>
-                  <Col className="text-end">₹{selectedPayment.dueAmount}</Col>
+                  <Col className="text-end">₹{selectedPayment.dueAmount.toLocaleString()}</Col>
                 </Row>
               </div>
 
               <Form.Group className="mb-3">
-                <Form.Label>Payment Amount</Form.Label>
-                <Form.Control 
-                  type="number" 
+                <Form.Label>Payment Amount (₹)</Form.Label>
+                <Form.Control
+                  type="number"
                   value={paymentAmount}
-                  onChange={(e) => setPaymentAmount(e.target.value)}
+                  onChange={(e) => setPaymentAmount(Number(e.target.value))}
+                  min={selectedPayment.dueAmount * 0.2}
                   max={selectedPayment.dueAmount}
+                  className="form-control-lg"
                 />
                 <Form.Text className="text-muted">
-                  You can pay partial or full amount
+                  You can pay between 20% (₹{(selectedPayment.dueAmount * 0.2).toLocaleString()}) and the full amount.
                 </Form.Text>
               </Form.Group>
 
@@ -215,19 +233,29 @@ const PaymentPage = () => {
                   />
                 </div>
               </Form.Group>
+
+              <div className="d-flex justify-content-between align-items-center mt-4">
+                <div>
+                  <h5 className="mb-0">Amount to Pay:</h5>
+                  <p className="text-muted">Selected amount</p>
+                </div>
+                <h4 className="text-primary mb-0">₹{paymentAmount.toLocaleString()}</h4>
+              </div>
             </>
+          ) : (
+            <p>Loading payment details...</p>
           )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
             Cancel
           </Button>
-          <Button 
-            variant="primary" 
+          <Button
+            variant="primary"
             onClick={handleCompletePayment}
             disabled={paymentAmount <= 0 || paymentAmount > selectedPayment?.dueAmount}
           >
-            Pay ₹{paymentAmount}
+            Pay ₹{paymentAmount.toLocaleString()}
           </Button>
         </Modal.Footer>
       </Modal>

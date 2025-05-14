@@ -2,7 +2,10 @@ import React from 'react';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import aboutImg from '../../assets/images/about/about.jpeg';
 
+
 const AboutUs = () => (
+  <>
+  
   <section id="about" className="py-5 bg-white" >
     <Container >
       <Row className="align-items-center" >
@@ -26,6 +29,7 @@ const AboutUs = () => (
       </Row>
     </Container>
   </section>
+  </>
 );
 
 export default AboutUs;

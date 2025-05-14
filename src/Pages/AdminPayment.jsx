@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Container, Table, Button, Badge } from 'react-bootstrap';
 import AdminBookingDetail from './AdminBookingDetail';
 
 const dummyAdminPayments = [
-  {
+   {
     id: 1,
     userName: 'John Doe',
     eventType: 'Wedding',
@@ -47,15 +48,12 @@ const AdminPayment = () => {
 
   const handleCloseModal = () => {
     setShowDetailModal(false);
-    // In a real application, you would update payment status here after API calls
-    // For demo purposes, let's simulate updating the payment status
     if (selectedPayment) {
-      const updatedPayments = payments.map(payment => {
+      const updatedPayments = payments.map((payment) => {
         if (payment.id === selectedPayment.id) {
-          return { 
-            ...payment, 
-            // This is just for demonstration - in a real app this would be updated based on actual payment received
-            lastReminderSent: new Date().toISOString().split('T')[0]
+          return {
+            ...payment,
+            lastReminderSent: new Date().toISOString().split('T')[0],
           };
         }
         return payment;
@@ -86,22 +84,26 @@ const AdminPayment = () => {
               <td>{index + 1}</td>
               <td>{payment.userName}</td>
               <td>{payment.eventType}</td>
-              <td>₹{payment.totalAmount}</td>
-              <td>₹{payment.paidAmount}</td>
-              <td>₹{payment.dueAmount}</td>
+              <td>₹{payment.totalAmount.toLocaleString()}</td>
+              <td>₹{payment.paidAmount.toLocaleString()}</td>
+              <td>₹{payment.dueAmount.toLocaleString()}</td>
               <td>
-                <Badge bg={
-                  payment.paymentStatus === 'Fully Paid' ? 'success' :
-                  payment.paymentStatus === 'Half Paid' ? 'info' :
-                  'warning'
-                }>
+                <Badge
+                  bg={
+                    payment.paymentStatus === 'Fully Paid'
+                      ? 'success'
+                      : payment.paymentStatus === 'Half Paid'
+                      ? 'info'
+                      : 'warning'
+                  }
+                >
                   {payment.paymentStatus}
                 </Badge>
               </td>
               <td>
                 {payment.paymentStatus !== 'Fully Paid' ? (
-                  <Button 
-                    variant="primary" 
+                  <Button
+                    variant="primary"
                     size="sm"
                     onClick={() => handleSendBill(payment)}
                   >
@@ -122,21 +124,20 @@ const AdminPayment = () => {
           ))}
         </tbody>
       </Table>
-
-      {/* Detail Modal for Sending Payment Reminders */}
-      <AdminBookingDetail 
-        show={showDetailModal} 
-        handleClose={handleCloseModal} 
+      <AdminBookingDetail
+        show={showDetailModal}
+        handleClose={handleCloseModal}
         booking={{
           id: selectedPayment?.id,
           userName: selectedPayment?.userName,
           eventType: selectedPayment?.eventType,
-          eventDate: selectedPayment?.eventDate
+          eventDate: selectedPayment?.eventDate,
+          status: 'Approved',
         }}
         paymentInfo={selectedPayment ? {
           totalAmount: selectedPayment.totalAmount,
           paidAmount: selectedPayment.paidAmount,
-          dueAmount: selectedPayment.dueAmount
+          dueAmount: selectedPayment.dueAmount,
         } : null}
       />
     </Container>

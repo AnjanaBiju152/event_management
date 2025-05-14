@@ -1,10 +1,8 @@
-import { DollarSign, Calendar, Clock, Users, Tag, Palette, Globe, CheckCircle, Utensils, Music, MapPin } from 'lucide-react';
-import '../assets/styles/Summary.css'
-// Step 7: Review Summary
+import { DollarSign, Calendar, Palette, CheckCircle, Utensils, Music, Globe } from 'lucide-react';
+import '../assets/styles/Summary.css';
+
 export default function ReviewSummary({ eventDetails }) {
-  // Helper function to convert event details to readable format
   const getReadableValue = (field, value) => {
-    // Special case for date formatting
     if (field === 'date' && value) {
       return new Date(value).toLocaleDateString('en-US', { 
         weekday: 'long', 
@@ -14,13 +12,11 @@ export default function ReviewSummary({ eventDetails }) {
       });
     }
     
-    // Event type
     if (field === 'type') {
       const types = { wedding: 'Wedding', birthday: 'Birthday', corporate: 'Corporate Event' };
       return types[value] || value;
     }
     
-    // Service style
     if (field === 'serviceStyle') {
       const styles = { 
         buffet: 'Buffet Style', 
@@ -32,17 +28,15 @@ export default function ReviewSummary({ eventDetails }) {
       return styles[value] || value;
     }
     
-    // Package type
     if (field === 'packageType') {
-      const packages = {
+      const types = {
         standard: 'Standard Package',
         premium: 'Premium Package',
         deluxe: 'Deluxe Package'
       };
-      return packages[value] || value;
+      return types[value] || value;
     }
     
-    // Venue
     if (field === 'venue') {
       const venues = {
         luxury: 'Luxury Venue',
@@ -52,7 +46,6 @@ export default function ReviewSummary({ eventDetails }) {
       return venues[value] || value;
     }
     
-    // Entertainment
     if (field === 'entertainment') {
       const entertainment = {
         dj: 'DJ Services',
@@ -64,16 +57,13 @@ export default function ReviewSummary({ eventDetails }) {
       return entertainment[value] || value;
     }
     
-    // For boolean values
     if (typeof value === 'boolean') {
       return value ? 'Yes' : 'No';
     }
     
-    // For array values (like services or dietary restrictions)
     if (Array.isArray(value)) {
       if (value.length === 0) return 'None';
       
-      // Services
       if (field === 'services') {
         const serviceNames = {
           decor: 'Decoration',
@@ -92,7 +82,6 @@ export default function ReviewSummary({ eventDetails }) {
         return value.map(service => serviceNames[service] || service).join(', ');
       }
       
-      // Dietary restrictions
       if (field === 'dietaryRestrictions') {
         const dietaryNames = {
           vegetarian: 'Vegetarian',
@@ -109,35 +98,52 @@ export default function ReviewSummary({ eventDetails }) {
       return value.join(', ');
     }
     
+    if (field === 'transportation' || field === 'accommodation') {
+      if (typeof value === 'object' && value !== null) {
+        if (field === 'transportation') {
+          const { vehicleType, numberOfVehicles } = value;
+          return vehicleType && numberOfVehicles 
+            ? `${numberOfVehicles} ${vehicleType.charAt(0).toUpperCase() + vehicleType.slice(1)}(s)`
+            : 'Yes';
+        }
+        if (field === 'accommodation') {
+          const { hotelPreference, numberOfRooms, checkInDate, checkOutDate } = value;
+          return hotelPreference || numberOfRooms || checkInDate || checkOutDate
+            ? `${hotelPreference || 'Hotel'} (${numberOfRooms || 'TBD'} rooms, ${checkInDate || 'TBD'} to ${checkOutDate || 'TBD'})`
+            : 'Yes';
+        }
+      }
+      return value ? 'Yes' : 'No';
+    }
+    
     return value || 'Not specified';
   };
 
-  // Group related details together for the summary
   const eventSections = [
     {
       title: 'Event Basics',
-      icon: <Calendar className="h-5 w-5 text-blue-500" />,
+      icon: <Calendar className="section-icon icon-event" />,
       items: [
         { label: 'Event Type', value: getReadableValue('type', eventDetails.type) },
         { label: 'Date', value: getReadableValue('date', eventDetails.date) },
         { label: 'Time', value: eventDetails.time || 'Not specified' },
         { label: 'Duration', value: `${eventDetails.duration} hours` },
-        { label: 'Guest Count', value: `${eventDetails.guestCount} people` },
+        { label: 'Guest Count', value: `${eventDetails.guestCount} guests` },
         { label: 'Venue', value: getReadableValue('venue', eventDetails.venue) }
       ]
     },
     {
       title: 'Theme & Style',
-      icon: <Palette className="h-5 w-5 text-purple-500" />,
+      icon: <Palette className="section-icon icon-theme" />,
       items: [
         { label: 'Theme', value: eventDetails.theme || 'Not specified' },
         { label: 'Color Palette', value: eventDetails.colorPalette || 'Not specified' },
-        { label: 'Cultural Style', value: eventDetails.culturalOption || 'Not specified' }
+        { label: 'Cultural Style', value: getReadableValue('culturalOption', eventDetails.culturalOption) }
       ]
     },
     {
       title: 'Services & Package',
-      icon: <CheckCircle className="h-5 w-5 text-green-500" />,
+      icon: <CheckCircle className="section-icon icon-services" />,
       items: [
         { label: 'Selected Services', value: getReadableValue('services', eventDetails.services) },
         { label: 'Package Type', value: getReadableValue('packageType', eventDetails.packageType) }
@@ -145,7 +151,7 @@ export default function ReviewSummary({ eventDetails }) {
     },
     {
       title: 'Food & Catering',
-      icon: <Utensils className="h-5 w-5 text-yellow-500" />,
+      icon: <Utensils className="section-icon icon-food" />,
       items: [
         { label: 'Cuisine', value: eventDetails.catering.cuisine || 'Not specified' },
         { label: 'Dietary Restrictions', value: getReadableValue('dietaryRestrictions', eventDetails.catering.dietaryRestrictions) },
@@ -154,96 +160,93 @@ export default function ReviewSummary({ eventDetails }) {
     },
     {
       title: 'Additional Services',
-      icon: <Music className="h-5 w-5 text-red-500" />,
+      icon: <Music className="section-icon icon-additional" />,
       items: [
         { label: 'Entertainment', value: getReadableValue('entertainment', eventDetails.additionalServices.entertainment) },
         { label: 'Transportation', value: getReadableValue('transportation', eventDetails.additionalServices.transportation) },
-        { label: 'Accommodation', value: getReadableValue('accommodation', eventDetails.additionalServices.accommodation) },
-        { label: 'Photography', value: getReadableValue('photography', eventDetails.additionalServices.photography) }
+        { label: 'Accommodation', value: getReadableValue('accommodation', eventDetails.additionalServices.accommodation) }
       ]
     }
   ];
 
   const handleSubmit = () => {
-    // This would typically send the data to a server
     alert('Your event booking request has been submitted! Our team will contact you shortly.');
   };
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900">Review Your Event</h2>
-        <p className="mt-1 text-gray-500">Please review all details before submitting your request.</p>
+    <div className="summary-container">
+      <div className="summary-header">
+        <h2 className="summary-title">Review Your Event</h2>
+        <p className="summary-subtitle">Confirm all details before submitting your request.</p>
       </div>
 
-      <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 flex items-center justify-between">
-        <div className="flex items-center">
-          <DollarSign className="h-8 w-8 text-blue-600 mr-3" />
-          <div>
-            <h3 className="text-lg font-medium text-blue-800">Total Estimated Cost</h3>
-            <p className="text-sm text-blue-600">This is an estimate and may change based on final details</p>
+      <div className="cost-banner">
+        <div className="flex items-center flex-wrap gap-4">
+          <DollarSign className="cost-icon" />
+          <div className="cost-info">
+            <h3 className="cost-title">Total Estimated Cost</h3>
+            <p className="cost-note">This is an estimate and may change based on final details.</p>
           </div>
         </div>
-        <div className="text-2xl font-bold text-blue-600">
+        <div className="cost-amount">
           ${eventDetails.totalEstimate.toLocaleString()}
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="sections-container space-y-8">
         {eventSections.map((section, index) => (
-          <div key={index} className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex items-center">
+          <div key={index} className="summary-section">
+            <div className="section-header">
               {section.icon}
-              <h3 className="ml-2 text-lg font-medium text-gray-900">{section.title}</h3>
+              <h3 className="section-title">{section.title}</h3>
             </div>
-            <div className="p-4">
-              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+            <div className="section-content">
+              <div className="details-grid">
                 {section.items.map((item, itemIndex) => (
-                  <div key={itemIndex} className="sm:col-span-1">
-                    <dt className="text-sm font-medium text-gray-500">{item.label}</dt>
-                    <dd className="mt-1 text-sm text-gray-900">{item.value}</dd>
+                  <div key={itemIndex} className="detail-item">
+                    <dt className="detail-label">{item.label}</dt>
+                    <dd className="detail-value">{item.value}</dd>
                   </div>
                 ))}
-              </dl>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
       {eventDetails.culturalNotes && (
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex items-center">
-            <Globe className="h-5 w-5 text-indigo-500" />
-            <h3 className="ml-2 text-lg font-medium text-gray-900">Cultural Notes</h3>
+        <div className="cultural-notes">
+          <div className="section-header">
+            <Globe className="section-icon icon-cultural" />
+            <h3 className="section-title">Cultural Notes</h3>
           </div>
-          <div className="p-4">
-            <p className="text-sm text-gray-600">{eventDetails.culturalNotes}</p>
+          <div className="cultural-notes-content">
+            <p className="detail-value">{eventDetails.culturalNotes}</p>
           </div>
         </div>
       )}
 
-      <div className="pt-4">
-        <div className="flex items-center">
-          <input
-            id="terms"
-            name="terms"
-            type="checkbox"
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-          />
-          <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
-            I agree to the terms and conditions
-          </label>
-        </div>
+      <div className="terms-container">
+        <input
+          id="terms"
+          name="terms"
+          type="checkbox"
+          className="terms-checkbox"
+          required
+        />
+        <label htmlFor="terms" className="terms-label">
+          I agree to the <a href="/terms" className="text-teal-600 hover:underline">terms and conditions</a>
+        </label>
       </div>
 
-      <div className="pt-4">
+      <div className="submit-container">
         <button
           onClick={handleSubmit}
-          className="w-full bg-blue-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="submit-button"
         >
           Submit Event Request
         </button>
-        <p className="mt-2 text-sm text-gray-500 text-center">
+        <p className="submit-note">
           Our team will review your request and contact you within 24 hours.
         </p>
       </div>
