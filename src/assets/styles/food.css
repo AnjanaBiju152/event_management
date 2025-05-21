@@ -1,197 +1,283 @@
-/* food.css - Styles for food catering components */
+/* food.css - Modern elegant style for food catering components */
 
-/* Base styling for food sections */
+/* Base styling with a warm color palette */
 .food-section {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
-  background-color: #ffffff;
+  padding: 3rem 2rem;
+  background-color: #fffaf5;
+  color: #3d3d3d;
+  font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* Section titles */
+/* Elegant section titles */
 .section-title {
-  color: #1a202c;
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
+  color: #5d4037;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title:after {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, #8d6e63, #d7ccc8);
+  bottom: -8px;
+  left: 0;
 }
 
 .section-subtitle {
-  color: #718096;
-  font-size: 1rem;
-  margin-bottom: 2rem;
+  color: #795548;
+  font-size: 1.125rem;
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+  line-height: 1.6;
+  max-width: 720px;
 }
 
-/* Cards (cuisine, dietary, service style) */
+/* Card designs with subtle warm tones */
 .cuisine-card, .dietary-card, .service-style-card {
   border-radius: 0.75rem;
-  border: 1px solid #e2e8f0;
-  padding: 1.5rem;
+  border: none;
+  padding: 1.75rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   cursor: pointer;
   background-color: #fff;
-  min-height: 150px; /* Ensure consistent card height */
+  min-height: 170px;
+  box-shadow: 0 8px 20px rgba(211, 182, 158, 0.15);
 }
 
 .cuisine-card:hover, .dietary-card:hover, .service-style-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  background-color: #f7fafc;
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(211, 182, 158, 0.25);
 }
 
 .cuisine-card.selected, .dietary-card.selected, .service-style-card.selected {
-  border-color: #3b82f6;
-  background-color: #f0f7ff;
+  background-color: #fff3e0;
+  box-shadow: 0 8px 20px rgba(211, 182, 158, 0.3);
 }
 
-/* Recommended cuisine highlight */
+/* Elegant hover effect with overlay */
+.cuisine-card:after, .dietary-card:after, .service-style-card:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(255, 240, 223, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cuisine-card:hover:after, .dietary-card:hover:after, .service-style-card:hover:after {
+  opacity: 1;
+}
+
+/* Recommended cuisine styling */
 .cuisine-card.recommended {
-  box-shadow: 0 0 0 2px #f59e0b;
+  border-left: 4px solid #ff9800;
 }
 
-/* Card content */
+.cuisine-card.recommended:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 4px;
+  background: linear-gradient(to bottom, #ff9800, #ffcc80);
+}
+
+/* Card content styling */
 .card-content {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .card-title {
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: 600;
-  color: #1a202c;
+  color: #5d4037;
+  margin-top: 0.5rem;
+  letter-spacing: -0.01em;
 }
 
 .card-description {
-  font-size: 0.875rem;
-  color: #718096;
-  line-height: 1.5;
+  font-size: 1rem;
+  color: #795548;
+  line-height: 1.6;
 }
 
-/* Example dishes */
+/* Food icon styling */
+.food-icon {
+  color: #a1887f;
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  background-color: #fff8f0;
+  padding: 0.75rem;
+  border-radius: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border: 1px dashed #d7ccc8;
+}
+
+.cuisine-card:hover .food-icon {
+  background-color: #fff3e0;
+  color: #8d6e63;
+  transform: rotate(15deg);
+}
+
+.cuisine-card.selected .food-icon {
+  background-color: #ffcc80;
+  color: #5d4037;
+  border-color: #ffcc80;
+}
+
+/* Example dishes styling */
 .example-dishes {
   list-style: none;
   padding: 0;
-  margin: 0.5rem 0 0;
-  max-height: 80px; /* Prevent overflow */
+  margin: 1rem 0 0;
+  max-height: 100px;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #d7ccc8 #f5f5f5;
+}
+
+.example-dishes::-webkit-scrollbar {
+  width: 4px;
+}
+
+.example-dishes::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.example-dishes::-webkit-scrollbar-thumb {
+  background-color: #d7ccc8;
+  border-radius: 4px;
 }
 
 .example-dish {
-  font-size: 0.85rem;
-  color: #4a5568;
-  line-height: 1.4;
+  font-size: 0.95rem;
+  color: #5d4037;
+  line-height: 1.6;
   position: relative;
-  padding-left: 1rem;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-style: italic;
 }
 
 .example-dish:before {
-  content: '•';
+  content: '✓';
   position: absolute;
   left: 0;
-  color: #718096;
+  color: #a1887f;
+  font-size: 0.9rem;
+  top: 0.15rem;
+  font-style: normal;
 }
 
-/* Food icons */
-.food-icon {
-  color: #4b5563;
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-/* Recommended badge */
+/* Recommended badge styling */
 .recommended-badge {
   position: absolute;
-  bottom: 0.75rem;
-  right: 0.75rem;
-  background-color: #fefcbf;
-  color: #b7791f;
+  top: 1rem;
+  right: 1rem;
+  background: #fff3e0;
+  color: #e65100;
   font-size: 0.75rem;
-  font-weight: 500;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 4px rgba(230, 81, 0, 0.15);
+  letter-spacing: 0.03em;
+  border: 1px solid #ffe0b2;
 }
 
-/* Customization input */
+/* Customization input styling */
+.customization-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #5d4037;
+  margin-bottom: 0.5rem;
+  margin-top: 1.5rem;
+}
+
 .customization-input {
-  margin-top: 1rem;
-  padding: 0.5rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.375rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d7ccc8;
+  border-radius: 0.5rem;
   width: 100%;
-  font-size: 0.875rem;
-  color: #1a202c;
-  background-color: #f7fafc;
-  transition: border-color 0.2s ease-in-out;
+  font-size: 0.95rem;
+  color: #5d4037;
+  background-color: #fff;
+  transition: all 0.3s ease;
 }
 
 .customization-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  border-color: #a1887f;
+  box-shadow: 0 0 0 3px rgba(161, 136, 127, 0.2);
 }
 
-.customization-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #1a202c;
-  margin-bottom: 0.25rem;
+.customization-input::placeholder {
+  color: #bcaaa4;
+  font-style: italic;
 }
 
-/* Dietary alert */
+/* Dietary alert styling */
 .dietary-alert {
-  background-color: #fff3cd;
-  color: #856404;
-  border-left: 4px solid #ffeeba;
-  padding: 1rem;
-  margin: 1.5rem 0;
-  border-radius: 6px;
+  background-color: #fff8e1;
+  color: #f57c00;
+  border-left: 4px solid #ffb74d;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: 0.5rem;
   display: flex;
-  align-items: start;
+  align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(255, 167, 38, 0.15);
 }
 
 .alert-icon {
-  margin-right: 0.75rem;
+  margin-right: 1rem;
   flex-shrink: 0;
+  color: #ff9800;
 }
 
-/* Animations */
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
-  }
-}
-
-.cuisine-card.selected, .dietary-card.selected, .service-style-card.selected {
-  animation: pulse 2s infinite;
-}
-
-/* SelectionIndicator styles */
+/* Selection indicator styling */
 .selection-indicator-check-circle {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
+  top: 1rem;
+  right: 1rem;
+  transition: all 0.3s ease;
+  z-index: 2;
 }
 
-/* Color overrides for SelectionIndicator */
-.bg-blue-500 { background-color: #3b82f6; }
-.border-blue-500 { border-color: #3b82f6; }
-.text-blue-500 { color: #3b82f6; }
+/* Color overrides */
+.bg-blue-500 { background-color: #ff9800; }
+.border-blue-500 { border-color: #ff9800; }
+.text-blue-500 { color: #ff9800; }
 
-/* Responsive grids */
+/* Enhanced responsive grids */
 .cuisine-grid, .dietary-grid, .service-style-grid {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 @media (min-width: 640px) {
@@ -202,24 +288,70 @@
 
 @media (min-width: 1024px) {
   .cuisine-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
   .dietary-grid, .service-style-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  .cuisine-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Animation for selected cards */
+@keyframes soft-glow {
+  0% {
+    box-shadow: 0 8px 20px rgba(211, 182, 158, 0.2);
+  }
+  50% {
+    box-shadow: 0 8px 25px rgba(211, 182, 158, 0.4);
+  }
+  100% {
+    box-shadow: 0 8px 20px rgba(211, 182, 158, 0.2);
+  }
+}
+
+.cuisine-card.selected, .dietary-card.selected, .service-style-card.selected {
+  animation: soft-glow 3s infinite;
+}
+
 /* Mobile responsive adjustments */
 @media (max-width: 640px) {
   .food-section {
-    padding: 1rem;
+    padding: 2rem 1rem;
   }
 
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+  
   .cuisine-card, .dietary-card, .service-style-card {
-    margin-bottom: 1rem;
+    padding: 1.5rem;
   }
-
+  
+  .card-title {
+    font-size: 1.25rem;
+  }
+  
   .example-dish {
-    font-size: 0.8rem;
+    font-size: 0.875rem;
+  }
+  
+  .recommended-badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.75rem;
+  }
+  
+  .food-icon {
+    width: 3rem;
+    height: 3rem;
   }
 }

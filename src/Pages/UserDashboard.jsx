@@ -17,7 +17,7 @@ const UserDashboard = () => (
         <Sidebar links={userLinks} />
       </Col>
       <Col md={9} className="p-4">
-        <h2 className="fw-bold mb-4">Welcome, User!</h2>
+        <h2 className="fw-bold mb-4">Welcome, Anjana!</h2>
         <p>Book events, manage your bookings, and track your payments here.</p>
         <div className="timeline mt-5">
           <h5>Event Progress</h5>

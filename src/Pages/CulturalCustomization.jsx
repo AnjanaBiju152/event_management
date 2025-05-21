@@ -10,43 +10,43 @@ export default function CulturalCustomization({ eventDetails, updateEventDetails
         id: 'hindu',
         name: 'Hindu Wedding',
         description: 'Traditional Hindu ceremonies with rituals honoring cultural customs',
-        imageUrl: '/beachwedding.jpg',
+        imageUrl: '/h.jpg',
       },
       { 
         id: 'christian', 
         name: 'Christian Wedding', 
         description: 'Traditional Christian ceremony with customary elements', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/ch.jpg' 
       },
       { 
         id: 'muslim', 
         name: 'Muslim Wedding', 
         description: 'Islamic Nikah ceremony with traditional customs', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/m.jpg' 
       },
       { 
         id: 'jewish', 
         name: 'Jewish Wedding', 
         description: 'Traditional Jewish ceremony with Chuppah and customary elements', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/j.jpg' 
       },
       { 
         id: 'chinese', 
         name: 'Chinese Wedding', 
         description: 'Traditional Chinese customs including tea ceremony', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/china.jpg' 
       },
       { 
         id: 'fusion', 
         name: 'Fusion/Multicultural', 
         description: 'Blend multiple cultural traditions into one ceremony', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/mul.jpg' 
       },
       { 
         id: 'nonreligious', 
         name: 'Non-Religious/Civil', 
         description: 'Civil ceremony without religious elements', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/non.jpg' 
       },
     ],
     birthday: [
@@ -54,37 +54,37 @@ export default function CulturalCustomization({ eventDetails, updateEventDetails
         id: 'western', 
         name: 'Western Birthday', 
         description: 'Traditional cake, candles, gifts, and games', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/western.jpg' 
       },
       { 
         id: 'quinceanera', 
         name: 'Quinceañera', 
         description: 'Traditional Latin American celebration for 15th birthday', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/qu.jpg' 
       },
       { 
         id: 'sweet16', 
         name: 'Sweet 16', 
         description: 'American tradition celebrating 16th birthday', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/16.jpg' 
       },
       { 
         id: 'chinese', 
         name: 'Chinese Birthday', 
         description: 'Traditional Chinese customs with longevity symbols', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/chin.jpg' 
       },
       { 
         id: 'korean', 
         name: 'Korean Dol/Doljanchi', 
         description: 'Traditional first birthday celebration', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/korea.jpg' 
       },
       { 
         id: 'custom', 
         name: 'Custom Cultural', 
         description: 'Create your own cultural celebration', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/custom.jpeg' 
       },
     ],
     corporate: [
@@ -92,31 +92,31 @@ export default function CulturalCustomization({ eventDetails, updateEventDetails
         id: 'western', 
         name: 'Western Business', 
         description: 'Standard Western business protocols and customs', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/wb.jpg' 
       },
       { 
         id: 'asian', 
         name: 'Asian Business', 
         description: 'Business customs with respect to Asian protocols', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/ap.jpg' 
       },
       { 
         id: 'middleeastern', 
         name: 'Middle Eastern', 
         description: 'Business customs respectful of Middle Eastern traditions', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/mp.jpg' 
       },
       { 
         id: 'international', 
         name: 'International', 
         description: 'Multicultural approach accommodating global attendees', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/ip.jpg' 
       },
       { 
         id: 'custom', 
         name: 'Custom Protocol', 
         description: 'Design your own cultural approach', 
-        imageUrl: '/beachwedding.jpg' 
+        imageUrl: '/cp.jpg' 
       },
     ],
   };

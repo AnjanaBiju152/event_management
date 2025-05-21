@@ -1,9 +1,16 @@
 import React from 'react';
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
+import { FaArrowLeft } from "react-icons/fa";
 
 const AdminProfile = () => {
   return (
-    <Container className="py-5"  style={{ minHeight: '80vh' ,marginTop:'85px' }}>
+    <Container className="py-5" style={{ minHeight: '80vh', marginTop: '85px' }}>
+      <div className="mb-4">
+        <a href="/admin/dashboard" className="text-decoration-none text-secondary">
+          <FaArrowLeft className="me-2" />
+          Back
+        </a>
+      </div>
       <h2 className="fw-bold text-center mb-4">Admin Profile 👤</h2>
 
       <Row className="justify-content-center">
@@ -18,7 +25,6 @@ const AdminProfile = () => {
 
               <div className="d-flex justify-content-between mt-4">
                 <Button variant="primary" size="sm">Edit Profile</Button>
-                <Button variant="danger" size="sm">Logout</Button>
               </div>
             </Card.Body>
           </Card>

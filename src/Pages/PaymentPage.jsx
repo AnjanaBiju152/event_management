@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Table, Button, Badge, Modal, Form, Row, Col } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
+import { FaUserCircle, FaArrowLeft } from "react-icons/fa";
 
 const dummyPayments = [
   {
@@ -110,6 +111,12 @@ const PaymentPage = () => {
 
   return (
     <Container className="py-5" style={{ minHeight: '80vh', marginTop: '86px' }}>
+      <div className="mb-4">
+              <a href="/user/dashboard" className="text-decoration-none text-secondary">
+                <FaArrowLeft className="me-2" />
+                Back 
+              </a>
+            </div>
       <h2 className="fw-bold mb-4 text-center">My Payments</h2>
       <Table striped bordered hover responsive className="shadow-sm">
         <thead className="table-dark">

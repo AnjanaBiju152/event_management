@@ -41,7 +41,7 @@ const GalleryPage = () => {
     },
     {
       id: 6,
-      image: '/dinning2.jpg',
+      image: '/conference.jpg',
       category: 'catering',
       title: 'Fine Dining Experience'
     }

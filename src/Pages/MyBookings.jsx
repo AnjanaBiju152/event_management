@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Card, Badge, Button, ProgressBar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
+import { FaUserCircle, FaArrowLeft } from "react-icons/fa";
+
 import UserBillNotification from './UserBillNotification';
 
 const dummyBookings = [
@@ -131,6 +133,12 @@ const MyBookings = () => {
 
   return (
     <Container className="py-5" style={{ minHeight: '80vh', marginTop: '86px' }}>
+      <div className="mb-4">
+              <a href="/user/dashboard" className="text-decoration-none text-secondary">
+                <FaArrowLeft className="me-2" />
+                Back 
+              </a>
+            </div>
       <h2 className="fw-bold mb-4 text-center">My Bookings</h2>
       {bookings.some((booking) => booking.hasNewBill) && (
         <div className="alert alert-info mb-4" role="alert">

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Table, Button, Badge, Form, Row, Col, InputGroup } from 'react-bootstrap';
 import { Search, Calendar, Filter } from 'react-bootstrap-icons';
+import { FaArrowLeft } from "react-icons/fa";
 import AdminBookingDetail from './AdminBookingDetail';
 
 const dummyAdminBookings = [
@@ -177,6 +178,12 @@ const AdminBookings = () => {
 
   return (
     <Container className="py-5" style={{ minHeight: '80vh', marginTop: '86px' }}>
+      <div className="mb-4">
+        <a href="/admin/dashboard" className="text-decoration-none text-secondary">
+          <FaArrowLeft className="me-2" />
+          Back
+        </a>
+      </div>
       <h2 className="fw-bold mb-4 text-center">Event Request Management</h2>
       <div className="mb-4 bg-light p-3 rounded shadow-sm">
         <Row className="align-items-center mb-3">
@@ -304,8 +311,8 @@ const AdminBookings = () => {
                         booking.status === 'Approved'
                           ? 'success'
                           : booking.status === 'Rejected'
-                          ? 'danger'
-                          : 'warning'
+                            ? 'danger'
+                            : 'warning'
                       }
                       className="fs-6 w-100 text-center py-2"
                     >

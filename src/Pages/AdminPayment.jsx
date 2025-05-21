@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import { Container, Table, Button, Badge } from 'react-bootstrap';
 import AdminBookingDetail from './AdminBookingDetail';
+import { FaUserCircle, FaArrowLeft } from "react-icons/fa";
 
 const dummyAdminPayments = [
-   {
+  {
     id: 1,
     userName: 'John Doe',
     eventType: 'Wedding',
@@ -64,6 +65,12 @@ const AdminPayment = () => {
 
   return (
     <Container className="py-5" style={{ minHeight: '80vh', marginTop: '86px' }}>
+      <div className="mb-4">
+        <a href="/admin/dashboard" className="text-decoration-none text-secondary">
+          <FaArrowLeft className="me-2" />
+          Back 
+        </a>
+      </div>
       <h2 className="fw-bold mb-4 text-center">Manage Payments</h2>
       <Table striped bordered hover responsive className="shadow-sm">
         <thead className="table-dark">
@@ -93,8 +100,8 @@ const AdminPayment = () => {
                     payment.paymentStatus === 'Fully Paid'
                       ? 'success'
                       : payment.paymentStatus === 'Half Paid'
-                      ? 'info'
-                      : 'warning'
+                        ? 'info'
+                        : 'warning'
                   }
                 >
                   {payment.paymentStatus}

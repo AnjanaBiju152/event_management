@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
+import { FaUserCircle, FaArrowLeft } from "react-icons/fa";
 
 const AdminAlert = () => {
   const handleSubmit = (e) => {
@@ -18,6 +19,12 @@ const AdminAlert = () => {
 
   return (
     <Container className="py-5" style={{ minHeight: '80vh', marginTop: '86px' }}>
+      <div className="mb-4">
+        <a href="/admin/dashboard" className="text-decoration-none text-secondary">
+          <FaArrowLeft className="me-2" />
+          Back 
+        </a>
+      </div>
       <h2 className="fw-bold mb-4 text-center">Send Alerts to Users</h2>
       <Form className="shadow-sm p-4 bg-light rounded" onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="userEmail">

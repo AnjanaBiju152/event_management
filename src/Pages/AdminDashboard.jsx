@@ -3,7 +3,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import Sidebar from '../Components/common/Sidebar';
 
 const adminLinks = [
-  { name: 'Dashboard', path: '/admin/dashboard' },
+  
   { name: 'My Profile', path: '/admin/profile' },
   { name: 'Manage Bookings', path: '/admin/bookings' },
   { name: 'Approve Payments', path: '/admin/payments' },

@@ -12,9 +12,9 @@ export default function EventTypeSelection({ eventDetails, updateEventDetails })
   ];
 
   const venues = [
-    { id: 'luxury', name: 'Luxury Venue', image:'/beachwedding.jpg', description: 'Premium spaces with exceptional amenities and service' },
-    { id: 'standard', name: 'Standard Venue', image: '/beachwedding.jpg', description: 'Quality spaces with good amenities' },
-    { id: 'budget', name: 'Budget-Friendly', image: '/beachwedding.jpg', description: 'Affordable spaces with essential amenities' },
+    { id: 'luxury', name: 'Luxury Venue', image:'/luxary.jpg', description: 'Premium spaces with exceptional amenities and service' },
+    { id: 'standard', name: 'Standard Venue', image: '/standard.jpg', description: 'Quality spaces with good amenities' },
+    { id: 'budget', name: 'Budget-Friendly', image: '/friendly.jpg', description: 'Affordable spaces with essential amenities' },
   ];
 
   const today = new Date();
