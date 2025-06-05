@@ -23,9 +23,7 @@ const AdminProfile = () => {
               <p><strong>Email:</strong> admin@eventara.com</p>
               <p><strong>Role:</strong> Administrator</p>
 
-              <div className="d-flex justify-content-between mt-4">
-                <Button variant="primary" size="sm">Edit Profile</Button>
-              </div>
+              
             </Card.Body>
           </Card>
         </Col>
