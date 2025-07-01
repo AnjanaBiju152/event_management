@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Sidebar from '../Components/common/Sidebar';
 
 const userLinks = [
-  { name: 'My Profile', path: '/user/profile' },
+
   { name: 'Book Event', path: '/user/book-event' },
   { name: 'My Bookings', path: '/user/bookings' },
   { name: 'Payments', path: '/user/payments' },

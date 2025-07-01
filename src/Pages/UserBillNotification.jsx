@@ -1,26 +1,44 @@
+// frontend/src/Pages/UserBillNotification.jsx
 import React, { useState } from 'react';
 import { Modal, Button, ListGroup, Row, Col, Card, Form } from 'react-bootstrap';
 import { jsPDF } from 'jspdf';
+import { toast } from 'react-toastify';
+import { acceptBookingApi } from '../services/allApi';
 
-const UserBillNotification = ({ show, handleClose, bill }) => {
+const UserBillNotification = ({ show, handleClose, bill, onPaymentSuccess }) => {
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
-  const [paymentAmount, setPaymentAmount] = useState(0);
+  const [paymentAmount, setPaymentAmount] = useState(bill?.totalAmount * 0.5 || 0);
   const [paymentMethod, setPaymentMethod] = useState('upi');
 
   const handleProceedToPayment = () => {
     setShowPaymentOptions(true);
-    setPaymentAmount(bill.totalAmount * 0.5); // Default to 50% partial payment
   };
 
-  const handlePaymentComplete = () => {
-    alert(`Payment of ₹${paymentAmount} processed successfully via ${paymentMethod}!`);
-    handleClose();
+  const handlePaymentComplete = async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+      if (!token) {
+        toast.error('Please log in to process payment.');
+        return;
+      }
+      const result = await acceptBookingApi(bill.id, { paymentAmount, paymentMethod }, token);
+      if (result.status === 200) {
+        toast.success(`Payment of ₹${paymentAmount.toLocaleString()} processed successfully via ${paymentMethod}!`);
+        onPaymentSuccess();
+        handleClose();
+      } else {
+        toast.error(result.data?.message || 'Failed to process payment.');
+      }
+    } catch (err) {
+      console.error('Error processing payment:', err);
+      toast.error('An error occurred while processing payment.');
+    }
   };
 
   const handleContactAdmin = () => {
     const message = prompt('Please enter your query or clarification request:');
     if (message) {
-      alert('Your query has been sent to the admin.');
+      toast.success('Your query has been sent to the admin.');
     }
   };
 
@@ -29,39 +47,31 @@ const UserBillNotification = ({ show, handleClose, bill }) => {
     doc.setFontSize(18);
     doc.text('Eventara Bill', 20, 20);
     doc.setFontSize(12);
-    doc.text(`Bill ID: ${bill.id}`, 20, 30);
+    doc.text(`Bill ID: ${bill.id.slice(-6)}`, 20, 30);
     doc.text(`Event: ${bill.eventType}`, 20, 40);
     doc.text(`Date: ${bill.eventDate}`, 20, 50);
-    doc.text('Price Breakdown:', 20, 60);
-    doc.text(`Venue: ₹${bill.breakdown.venueCharge.toLocaleString()}`, 30, 70);
-    doc.text(`Catering: ₹${bill.breakdown.cateringCharge.toLocaleString()}`, 30, 80);
-    doc.text(`Decoration: ₹${bill.breakdown.decorationCharge.toLocaleString()}`, 30, 90);
-    doc.text(`Photography: ₹${bill.breakdown.photographyCharge.toLocaleString()}`, 30, 100);
-    doc.text(`Music: ₹${bill.breakdown.musicCharge.toLocaleString()}`, 30, 110);
-    doc.text(`Other: ₹${bill.breakdown.otherCharges.toLocaleString()}`, 30, 120);
-    doc.text(`Total: ₹${bill.totalAmount.toLocaleString()}`, 30, 130);
+    doc.text(`Location: ${bill.eventLocation}`, 20, 60);
+    doc.text(`Venue: ${bill.venue}`, 20, 70);
+    doc.text(`Guest Count: ${bill.guestCount}`, 20, 80);
+    doc.text(`Client Notes: ${bill.clientNotes}`, 20, 90);
+    doc.text(`Bill Sent On: ${bill.billSentDate}`, 20, 100);
+    doc.text(`Last Updated By: ${bill.lastUpdatedBy}`, 20, 110);
+    doc.text('Price Breakdown:', 20, 120);
+    doc.text(`Venue: ₹${bill.breakdown.venueCharge.toLocaleString()}`, 30, 130);
+    doc.text(`Catering: ₹${bill.breakdown.cateringCharge.toLocaleString()}`, 30, 140);
+    doc.text(`Decoration: ₹${bill.breakdown.decorationCharge.toLocaleString()}`, 30, 150);
+    doc.text(`Photography: ₹${bill.breakdown.photographyCharge.toLocaleString()}`, 30, 160);
+    doc.text(`Music: ₹${bill.breakdown.musicCharge.toLocaleString()}`, 30, 170);
+    doc.text(`Other: ₹${bill.breakdown.otherCharges.toLocaleString()}`, 30, 180); // Corrected field name
+    doc.text(`Total: ₹${bill.totalAmount.toLocaleString()}`, 30, 190);
     if (bill.note) {
-      doc.text('Note:', 20, 140);
-      doc.text(bill.note, 30, 150, { maxWidth: 160 });
+      doc.text('Note:', 20, 200);
+      doc.text(bill.note, 30, 210, { maxWidth: 160 });
     }
-    doc.save(`bill_${bill.id}.pdf`);
+    doc.save(`bill_${bill.id.slice(-6)}.pdf`);
   };
 
-  const mockBill = bill || {
-    id: 1,
-    eventType: 'Wedding',
-    eventDate: '2025-12-15',
-    totalAmount: 100000,
-    breakdown: {
-      venueCharge: 30000,
-      cateringCharge: 35000,
-      decorationCharge: 20000,
-      photographyCharge: 8000,
-      musicCharge: 5000,
-      otherCharges: 2000,
-    },
-    note: 'Thank you for choosing Eventara. Your special day is confirmed!',
-  };
+  if (!bill) return null;
 
   return (
     <Modal show={show} onHide={handleClose} size="lg">
@@ -79,9 +89,15 @@ const UserBillNotification = ({ show, handleClose, bill }) => {
 
             <h5>Event Details</h5>
             <ListGroup className="mb-4">
-              <ListGroup.Item><strong>Bill ID:</strong> #{mockBill.id}</ListGroup.Item>
-              <ListGroup.Item><strong>Event Type:</strong> {mockBill.eventType}</ListGroup.Item>
-              <ListGroup.Item><strong>Date:</strong> {mockBill.eventDate}</ListGroup.Item>
+              <ListGroup.Item><strong>Bill ID:</strong> #{bill.id.slice(-6)}</ListGroup.Item>
+              <ListGroup.Item><strong>Event Type:</strong> {bill.eventType}</ListGroup.Item>
+              <ListGroup.Item><strong>Date:</strong> {bill.eventDate}</ListGroup.Item>
+              <ListGroup.Item><strong>Location:</strong> {bill.eventLocation}</ListGroup.Item>
+              <ListGroup.Item><strong>Venue:</strong> {bill.venue}</ListGroup.Item>
+              <ListGroup.Item><strong>Guest Count:</strong> {bill.guestCount}</ListGroup.Item>
+              <ListGroup.Item><strong>Client Notes:</strong> {bill.clientNotes}</ListGroup.Item>
+              <ListGroup.Item><strong>Bill Sent On:</strong> {bill.billSentDate}</ListGroup.Item>
+              <ListGroup.Item><strong>Last Updated By:</strong> {bill.lastUpdatedBy}</ListGroup.Item>
             </ListGroup>
 
             <h5>Price Breakdown</h5>
@@ -89,40 +105,40 @@ const UserBillNotification = ({ show, handleClose, bill }) => {
               <Card.Body>
                 <Row className="mb-2">
                   <Col xs={8}>Venue Charges</Col>
-                  <Col xs={4} className="text-end">₹{mockBill.breakdown.venueCharge.toLocaleString()}</Col>
+                  <Col xs={4} className="text-end">₹{bill.breakdown.venueCharge.toLocaleString()}</Col>
                 </Row>
                 <Row className="mb-2">
                   <Col xs={8}>Catering Charges</Col>
-                  <Col xs={4} className="text-end">₹{mockBill.breakdown.cateringCharge.toLocaleString()}</Col>
+                  <Col xs={4} className="text-end">₹{bill.breakdown.cateringCharge.toLocaleString()}</Col>
                 </Row>
                 <Row className="mb-2">
                   <Col xs={8}>Decoration Charges</Col>
-                  <Col xs={4} className="text-end">₹{mockBill.breakdown.decorationCharge.toLocaleString()}</Col>
+                  <Col xs={4} className="text-end">₹{bill.breakdown.decorationCharge.toLocaleString()}</Col>
                 </Row>
                 <Row className="mb-2">
                   <Col xs={8}>Photography Charges</Col>
-                  <Col xs={4} className="text-end">₹{mockBill.breakdown.photographyCharge.toLocaleString()}</Col>
+                  <Col xs={4} className="text-end">₹{bill.breakdown.photographyCharge.toLocaleString()}</Col>
                 </Row>
                 <Row className="mb-2">
                   <Col xs={8}>Music & Entertainment</Col>
-                  <Col xs={4} className="text-end">₹{mockBill.breakdown.musicCharge.toLocaleString()}</Col>
+                  <Col xs={4} className="text-end">₹{bill.breakdown.musicCharge.toLocaleString()}</Col>
                 </Row>
                 <Row className="mb-2">
                   <Col xs={8}>Other Charges</Col>
-                  <Col xs={4} className="text-end">₹{mockBill.breakdown.otherCharges.toLocaleString()}</Col>
+                  <Col xs={4} className="text-end">₹{bill.breakdown.otherCharges.toLocaleString()}</Col> {/* Corrected field name */}
                 </Row>
                 <hr />
                 <Row className="fw-bold">
                   <Col xs={8}>Total Amount</Col>
-                  <Col xs={4} className="text-end">₹{mockBill.totalAmount.toLocaleString()}</Col>
+                  <Col xs={4} className="text-end">₹{bill.totalAmount.toLocaleString()}</Col>
                 </Row>
               </Card.Body>
             </Card>
 
-            {mockBill.note && (
+            {bill.note && (
               <div className="mb-4">
                 <h5>Note from Event Manager</h5>
-                <p className="p-3 bg-light rounded">{mockBill.note}</p>
+                <p className="p-3 bg-light rounded">{bill.note}</p>
               </div>
             )}
 
@@ -135,9 +151,9 @@ const UserBillNotification = ({ show, handleClose, bill }) => {
             <h5 className="mb-3">Choose Payment Amount</h5>
             <Form.Group className="mb-4">
               <Form.Label>Payment Amount (₹)</Form.Label>
-              <Slider
-                min={mockBill.totalAmount * 0.2} // Minimum 20%
-                max={mockBill.totalAmount}
+              <Form.Range
+                min={bill.totalAmount * 0.2}
+                max={bill.totalAmount}
                 step={1000}
                 value={paymentAmount}
                 onChange={(e) => setPaymentAmount(Number(e.target.value))}
@@ -147,12 +163,12 @@ const UserBillNotification = ({ show, handleClose, bill }) => {
                 type="number"
                 value={paymentAmount}
                 onChange={(e) => setPaymentAmount(Number(e.target.value))}
-                min={mockBill.totalAmount * 0.2}
-                max={mockBill.totalAmount}
+                min={bill.totalAmount * 0.2}
+                max={bill.totalAmount}
                 className="form-control-lg"
               />
               <Form.Text className="text-muted">
-                Select between 20% (₹{(mockBill.totalAmount * 0.2).toLocaleString()}) and 100% of the total.
+                Select between 20% (₹{(bill.totalAmount * 0.2).toLocaleString()}) and 100% of the total.
               </Form.Text>
             </Form.Group>
 
@@ -228,7 +244,7 @@ const UserBillNotification = ({ show, handleClose, bill }) => {
             <Button
               variant="primary"
               onClick={handlePaymentComplete}
-              disabled={paymentAmount < mockBill.totalAmount * 0.2 || paymentAmount > mockBill.totalAmount}
+              disabled={paymentAmount < bill.totalAmount * 0.2 || paymentAmount > bill.totalAmount}
             >
               Pay ₹{paymentAmount.toLocaleString()}
             </Button>

@@ -1,5 +1,7 @@
+// ProgressBar.jsx
 import { Check } from 'lucide-react';
-import '../assets/styles/Progress.css'
+import '../assets/styles/Progress.css';
+
 export default function ProgressBar({ currentStep, totalSteps }) {
   const steps = [
     { number: 1, name: 'Event Basics' },
@@ -8,7 +10,7 @@ export default function ProgressBar({ currentStep, totalSteps }) {
     { number: 4, name: 'Services' },
     { number: 5, name: 'Food & Catering' },
     { number: 6, name: 'Additional Services' },
-    {number: 6, name: 'Review'}
+    { number: 7, name: 'Review' } // Corrected key to 7
   ];
   
   return (
@@ -34,9 +36,7 @@ export default function ProgressBar({ currentStep, totalSteps }) {
               </div>
               
               {/* Step name */}
-              <span 
-                // className={`text-sm ${step.number === currentStep ? 'font-medium text-blue-600' : 'text-gray-600'}`}
-              >
+              <span>
                 {step.name}
               </span>
               

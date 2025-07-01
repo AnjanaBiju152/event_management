@@ -6,15 +6,16 @@ import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-
   const [userData, setUserData] = useState({
     name: '',
     email: '',
     mobile: '',
     password: ''
   });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleRegister = async () => {
+    setErrorMessage('');
     const { name, email, mobile, password } = userData;
 
     if (!name || !email || !mobile || !password) {
@@ -24,18 +25,23 @@ const RegisterPage = () => {
 
     try {
       const result = await registerApi(userData);
+      console.log('Register response:', JSON.stringify(result, null, 2));
 
       if (result.status === 201) {
         toast.success(`${name} registered successfully`);
-        setUserData({ name: '', email: '', mobile: '', password: '' }); // reset form
-        navigate('/login'); // navigate after reset
-      } else if (result.status === 409) {
-        toast.warning(`${email} already exists`);
+        setUserData({ name: '', email: '', mobile: '', password: '' });
+        navigate('/login');
       } else {
-        toast.error('Registration failed');
+        const errorMsg = result.data?.message || 'Registration failed';
+        setErrorMessage(errorMsg);
+        toast.error(errorMsg);
+        console.error('Registration failed:', result.status, result.data);
       }
-    } catch {
-      toast.error('Network or server error');
+    } catch (error) {
+      const errorMsg = error.data?.message || 'Network error. Please check server status.';
+      setErrorMessage(errorMsg);
+      toast.error(errorMsg);
+      console.error('Registration error:', error);
     }
   };
 
@@ -47,7 +53,17 @@ const RegisterPage = () => {
       >
         <Card className="p-4 shadow" style={{ width: '400px' }}>
           <h2 className="text-center mb-4 fw-bold">Register at Eventara</h2>
-          <Form  >
+          {errorMessage && (
+            <div className="text-center text-danger mb-3">
+              {errorMessage}
+              <div>
+                <Button variant="primary" size="sm" onClick={handleRegister} className="mt-2">
+                  Retry
+                </Button>
+              </div>
+            </div>
+          )}
+          <Form>
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Full Name</Form.Label>
               <Form.Control
@@ -57,18 +73,15 @@ const RegisterPage = () => {
                 onChange={(e) => setUserData({ ...userData, name: e.target.value })}
               />
             </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicEmail" >
+            <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email Address</Form.Label>
               <Form.Control
                 type="email"
                 placeholder="Enter email"
                 value={userData.email}
-              
                 onChange={(e) => setUserData({ ...userData, email: e.target.value })}
               />
             </Form.Group>
-
             <Form.Group className="mb-3" controlId="formBasicMobile">
               <Form.Label>Mobile Number</Form.Label>
               <Form.Control
@@ -78,7 +91,6 @@ const RegisterPage = () => {
                 onChange={(e) => setUserData({ ...userData, mobile: e.target.value })}
               />
             </Form.Group>
-
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
@@ -88,7 +100,6 @@ const RegisterPage = () => {
                 onChange={(e) => setUserData({ ...userData, password: e.target.value })}
               />
             </Form.Group>
-
             <Button
               variant="success"
               type="button"

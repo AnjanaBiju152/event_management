@@ -7,8 +7,10 @@ import { useNavigate } from 'react-router-dom';
 const LoginPage = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({ email: '', password: '' });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async () => {
+    setErrorMessage('');
     const { email, password } = userData;
 
     if (!email || !password) {
@@ -18,8 +20,9 @@ const LoginPage = () => {
 
     try {
       const result = await loginApi(userData);
-      console.log('Login response:', JSON.stringify(result.data, null, 2)); // Detailed debug log
-      if (result.status === 200) {
+      console.log('Login response:', JSON.stringify(result, null, 2));
+
+      if (result.status === 200 && result.data) {
         const { user_data, jwt_token } = result.data;
         if (!user_data || !jwt_token) {
           toast.error('Invalid response from server');
@@ -29,7 +32,7 @@ const LoginPage = () => {
         sessionStorage.setItem('existingUser', JSON.stringify(user_data));
         sessionStorage.setItem('token', jwt_token);
         toast.success('Login successful');
-        console.log('User role:', user_data.role); // Log role
+        console.log('User role:', user_data.role);
         if (user_data.role === 'admin') {
           console.log('Redirecting to /admin/dashboard');
           navigate('/admin/dashboard', { replace: true });
@@ -39,23 +42,24 @@ const LoginPage = () => {
         } else {
           toast.error(`Unknown user role: ${user_data.role}`);
           console.error('Invalid role:', user_data.role);
-          navigate('/login', { replace: true }); // Redirect back to login
+          navigate('/login', { replace: true });
         }
-      } else if (result.status === 406) {
-        toast.error('Email or password mismatched');
       } else {
-        toast.error('Something went wrong');
+        const errorMsg = result.data?.message || 'Login failed. Please try again.';
+        setErrorMessage(errorMsg);
+        toast.error(errorMsg);
         console.error('Login failed:', result.status, result.data);
       }
     } catch (error) {
-      toast.error('Login error. Check credentials.');
-      console.error('Login error:', error.message);
+      const errorMsg = error.data?.message || 'Network error. Please check server status.';
+      setErrorMessage(errorMsg);
+      toast.error(errorMsg);
+      console.error('Login error:', error);
     }
   };
 
   useEffect(() => {
     setUserData({ email: '', password: '' });
-    // Clear sessionStorage on initial load to prevent stale data
     sessionStorage.removeItem('existingUser');
     sessionStorage.removeItem('token');
   }, []);
@@ -68,6 +72,16 @@ const LoginPage = () => {
       >
         <Card className="p-4 shadow" style={{ width: '400px' }}>
           <h2 className="text-center mb-4 fw-bold">Login to Eventara</h2>
+          {errorMessage && (
+            <div className="text-center text-danger mb-3">
+              {errorMessage}
+              <div>
+                <Button variant="primary" size="sm" onClick={handleLogin} className="mt-2">
+                  Retry
+                </Button>
+              </div>
+            </div>
+          )}
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email Address</Form.Label>

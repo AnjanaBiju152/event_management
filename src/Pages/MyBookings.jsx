@@ -1,66 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Badge, Button, ProgressBar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
-import { FaUserCircle, FaArrowLeft } from "react-icons/fa";
-
+import { FaArrowLeft } from "react-icons/fa";
 import UserBillNotification from './UserBillNotification';
-
-const dummyBookings = [
-  {
-    id: 1,
-    eventType: 'Wedding',
-    eventDate: '2025-12-15',
-    bookingStatus: 'Approved',
-    paymentStatus: 'Half Paid',
-    totalAmount: 100000,
-    paidAmount: 50000,
-    dueAmount: 50000,
-    hasBill: true,
-    hasNewBill: false,
-  },
-  {
-    id: 2,
-    eventType: 'Birthday Party',
-    eventDate: '2025-10-05',
-    bookingStatus: 'Pending',
-    paymentStatus: 'Pending',
-    totalAmount: 0,
-    paidAmount: 0,
-    dueAmount: 0,
-    hasBill: false,
-    hasNewBill: false,
-  },
-  {
-    id: 3,
-    eventType: 'Corporate Event',
-    eventDate: '2025-08-20',
-    bookingStatus: 'Approved',
-    paymentStatus: 'Pending',
-    totalAmount: 80000,
-    paidAmount: 0,
-    dueAmount: 80000,
-    hasBill: true,
-    hasNewBill: true,
-  },
-];
+import { getUserBookingsApi } from '../services/allApi';
 
 const MyBookings = () => {
   const [showBillModal, setShowBillModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
-  const [bookings, setBookings] = useState(dummyBookings);
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const result = await getUserBookingsApi();
+        if (result.status === 200) {
+          setBookings(result.data);
+        }
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBookings();
+  }, []);
 
   const handleViewBill = (booking) => {
     setSelectedBooking(booking);
     setShowBillModal(true);
     if (booking.hasNewBill) {
-      const updatedBookings = bookings.map((b) => {
-        if (b.id === booking.id) {
-          return { ...b, hasNewBill: false };
-        }
-        return b;
-      });
+      const updatedBookings = bookings.map((b) =>
+        b._id === booking._id ? { ...b, hasNewBill: false } : b
+      );
       setBookings(updatedBookings);
     }
   };
@@ -70,7 +45,7 @@ const MyBookings = () => {
   };
 
   const handleContactAdmin = (booking) => {
-    const message = prompt(`Query for ${booking.eventType} (ID: ${booking.id}):`);
+    const message = prompt(`Query for ${booking.eventId?.eventType} (ID: ${booking._id}):`);
     if (message) {
       alert('Your query has been sent to the admin.');
     }
@@ -81,11 +56,12 @@ const MyBookings = () => {
     doc.setFontSize(18);
     doc.text('Eventara Bill', 20, 20);
     doc.setFontSize(12);
-    doc.text(`Bill ID: ${booking.id}`, 20, 30);
-    doc.text(`Event: ${booking.eventType}`, 20, 40);
-    doc.text(`Date: ${booking.eventDate}`, 20, 50);
+    doc.text(`Bill ID: ${booking._id.slice(-6)}`, 20, 30);
+    doc.text(`Event: ${booking.eventId?.eventType || 'N/A'}`, 20, 40);
+    doc.text(`Date: ${new Date(booking.eventId?.eventDate).toLocaleDateString() || 'N/A'}`, 20, 50);
     doc.text('Price Breakdown:', 20, 60);
-    const breakdown = {
+    
+    const breakdown = booking.priceBreakdown || {
       venueCharge: booking.totalAmount * 0.3,
       cateringCharge: booking.totalAmount * 0.35,
       decorationCharge: booking.totalAmount * 0.2,
@@ -93,15 +69,16 @@ const MyBookings = () => {
       musicCharge: booking.totalAmount * 0.05,
       otherCharges: booking.totalAmount * 0.02,
     };
-    doc.text(`Venue: ₹${breakdown.venueCharge.toLocaleString()}`, 30, 70);
-    doc.text(`Catering: ₹${breakdown.cateringCharge.toLocaleString()}`, 30, 80);
-    doc.text(`Decoration: ₹${breakdown.decorationCharge.toLocaleString()}`, 30, 90);
-    doc.text(`Photography: ₹${breakdown.photographyCharge.toLocaleString()}`, 30, 100);
-    doc.text(`Music: ₹${breakdown.musicCharge.toLocaleString()}`, 30, 110);
-    doc.text(`Other: ₹${breakdown.otherCharges.toLocaleString()}`, 30, 120);
-    doc.text(`Total: ₹${booking.totalAmount.toLocaleString()}`, 30, 130);
+
+    doc.text(`Venue: ₹${breakdown.venueCharge?.toLocaleString() || '0'}`, 30, 70);
+    doc.text(`Catering: ₹${breakdown.cateringCharge?.toLocaleString() || '0'}`, 30, 80);
+    doc.text(`Decoration: ₹${breakdown.decorationCharge?.toLocaleString() || '0'}`, 30, 90);
+    doc.text(`Photography: ₹${breakdown.photographyCharge?.toLocaleString() || '0'}`, 30, 100);
+    doc.text(`Music: ₹${breakdown.musicCharge?.toLocaleString() || '0'}`, 30, 110);
+    doc.text(`Other: ₹${breakdown.otherCharges?.toLocaleString() || '0'}`, 30, 120);
+    doc.text(`Total: ₹${booking.totalAmount?.toLocaleString() || '0'}`, 30, 130);
     doc.text('Note: Thank you for choosing Eventara!', 20, 140);
-    doc.save(`bill_${booking.id}.pdf`);
+    doc.save(`bill_${booking._id.slice(-6)}.pdf`);
   };
 
   const getTimelineStages = (booking) => {
@@ -131,155 +108,185 @@ const MyBookings = () => {
     return stages;
   };
 
+  if (loading) {
+    return (
+      <Container className="py-5" style={{ minHeight: '80vh', marginTop: '86px' }}>
+        <div className="text-center py-5">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </Container>
+    );
+  }
+
   return (
     <Container className="py-5" style={{ minHeight: '80vh', marginTop: '86px' }}>
       <div className="mb-4">
-              <a href="/user/dashboard" className="text-decoration-none text-secondary">
-                <FaArrowLeft className="me-2" />
-                Back 
-              </a>
-            </div>
+        <a href="/user/dashboard" className="text-decoration-none text-secondary">
+          <FaArrowLeft className="me-2" />
+          Back
+        </a>
+      </div>
       <h2 className="fw-bold mb-4 text-center">My Bookings</h2>
+      
       {bookings.some((booking) => booking.hasNewBill) && (
         <div className="alert alert-info mb-4" role="alert">
           <i className="bi bi-bell-fill me-2"></i>
           You have new approved bookings with pending payments!
         </div>
       )}
-      <Row className="g-4">
-        {bookings.map((booking) => (
-          <Col md={4} key={booking.id}>
-            <Card className={`shadow-sm ${booking.hasNewBill ? 'border-primary' : ''}`}>
-              {booking.hasNewBill && (
-                <div className="position-absolute top-0 end-0 m-2">
-                  <Badge bg="primary" pill>New</Badge>
-                </div>
-              )}
-              <Card.Body>
-                <Card.Title>{booking.eventType}</Card.Title>
-                <Card.Text>
-                  <strong>Date:</strong> {booking.eventDate} <br />
-                  <strong>Booking Status:</strong>{' '}
-                  <Badge
-                    bg={
-                      booking.bookingStatus === 'Approved'
-                        ? 'success'
-                        : booking.bookingStatus === 'Pending'
-                        ? 'warning'
-                        : 'danger'
-                    }
-                  >
-                    {booking.bookingStatus}
-                  </Badge>{' '}
-                  <br />
-                  <strong>Payment Status:</strong>{' '}
-                  <Badge
-                    bg={
-                      booking.paymentStatus === 'Half Paid'
-                        ? 'info'
-                        : booking.paymentStatus === 'Pending'
-                        ? 'warning'
-                        : booking.paymentStatus === 'Fully Paid'
-                        ? 'success'
-                        : 'secondary'
-                    }
-                  >
-                    {booking.paymentStatus}
-                  </Badge>
-                  {booking.bookingStatus === 'Approved' && (
-                    <>
+
+      {bookings.length === 0 ? (
+        <div className="text-center py-5">
+          <h4>No bookings found</h4>
+          <p>You haven't made any bookings yet.</p>
+        </div>
+      ) : (
+        <Row className="g-4">
+          {bookings.map((booking) => {
+            const paidAmount = booking.paymentHistory?.reduce(
+              (sum, payment) => sum + (payment.status === 'Completed' ? payment.amountPaid : 0),
+              0
+            ) || 0;
+            const dueAmount = booking.totalAmount - paidAmount;
+
+            return (
+              <Col md={4} key={booking._id}>
+                <Card className={`shadow-sm ${booking.hasNewBill ? 'border-primary' : ''}`}>
+                  {booking.hasNewBill && (
+                    <div className="position-absolute top-0 end-0 m-2">
+                      <Badge bg="primary" pill>New</Badge>
+                    </div>
+                  )}
+                  <Card.Body>
+                    <Card.Title>{booking.eventId?.eventType || 'Event'}</Card.Title>
+                    <Card.Text>
+                      <strong>Date:</strong> {new Date(booking.eventId?.eventDate).toLocaleDateString()} <br />
+                      <strong>Booking Status:</strong>{' '}
+                      <Badge
+                        bg={
+                          booking.bookingStatus === 'Approved'
+                            ? 'success'
+                            : booking.bookingStatus === 'Pending'
+                            ? 'warning'
+                            : 'danger'
+                        }
+                      >
+                        {booking.bookingStatus}
+                      </Badge>{' '}
                       <br />
-                      <strong>Total Amount:</strong> ₹{booking.totalAmount.toLocaleString()} <br />
-                      {booking.paymentStatus !== 'Pending' && (
+                      {booking.bookingStatus === 'Rejected' && booking.rejectReason && (
+                        <small className="text-danger d-block mt-1">
+                          <strong>Reason:</strong> {booking.rejectReason}
+                        </small>
+                      )}
+                      <strong>Payment Status:</strong>{' '}
+                      <Badge
+                        bg={
+                          booking.paymentStatus === 'Half Paid'
+                            ? 'info'
+                            : booking.paymentStatus === 'Pending'
+                            ? 'warning'
+                            : booking.paymentStatus === 'Fully Paid'
+                            ? 'success'
+                            : 'secondary'
+                        }
+                      >
+                        {booking.paymentStatus}
+                      </Badge>
+                      {booking.bookingStatus === 'Approved' && (
                         <>
-                          <strong>Paid:</strong> ₹{booking.paidAmount.toLocaleString()} <br />
-                          <strong>Due:</strong> ₹{booking.dueAmount.toLocaleString()} <br />
-                          <ProgressBar
-                            now={(booking.paidAmount / booking.totalAmount) * 100}
-                            label={`${Math.round((booking.paidAmount / booking.totalAmount) * 100)}% Paid`}
-                            variant={
-                              booking.paymentStatus === 'Fully Paid'
-                                ? 'success'
-                                : booking.paymentStatus === 'Half Paid'
-                                ? 'info'
-                                : 'warning'
-                            }
-                            className="mt-2"
-                          />
+                          <br />
+                          <strong>Total Amount:</strong> ₹{booking.totalAmount?.toLocaleString() || '0'} <br />
+                          {booking.paymentStatus !== 'Pending' && (
+                            <>
+                              <strong>Paid:</strong> ₹{paidAmount.toLocaleString()} <br />
+                              <strong>Due:</strong> ₹{dueAmount.toLocaleString()} <br />
+                              <ProgressBar
+                                now={(paidAmount / booking.totalAmount) * 100}
+                                label={`${Math.round((paidAmount / booking.totalAmount) * 100)}% Paid`}
+                                variant={
+                                  booking.paymentStatus === 'Fully Paid'
+                                    ? 'success'
+                                    : booking.paymentStatus === 'Half Paid'
+                                    ? 'info'
+                                    : 'warning'
+                                }
+                                className="mt-2"
+                              />
+                            </>
+                          )}
                         </>
                       )}
-                    </>
-                  )}
-                </Card.Text>
-                <div className="mt-3">
-                  <h6>Booking Progress</h6>
-                  <div className="timeline">
-                    {getTimelineStages(booking).map((stage, index) => (
-                      <div className="timeline-item" key={index}>
-                        <div
-                          className={`timeline-marker bg-${stage.completed ? stage.color : 'secondary'}`}
-                        ></div>
-                        <div className="timeline-content">
-                          <h6
-                            className={`mb-0 ${
-                              stage.completed ? `text-${stage.color}` : 'text-muted'
-                            }`}
-                          >
-                            {stage.name}
-                          </h6>
-                        </div>
+                    </Card.Text>
+                    <div className="mt-3">
+                      <h6>Booking Progress</h6>
+                      <div className="timeline">
+                        {getTimelineStages(booking).map((stage, index) => (
+                          <div className="timeline-item" key={index}>
+                            <div
+                              className={`timeline-marker bg-${stage.completed ? stage.color : 'secondary'}`}
+                            ></div>
+                            <div className="timeline-content">
+                              <h6
+                                className={`mb-0 ${stage.completed ? `text-${stage.color}` : 'text-muted'}`}
+                              >
+                                {stage.name}
+                              </h6>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="d-grid gap-2 mt-3">
-                  {booking.hasBill && (
-                    <>
+                    </div>
+                    <div className="d-grid gap-2 mt-3">
+                      {booking.hasBill && (
+                        <>
+                          <Button
+                            variant={booking.hasNewBill ? 'primary' : 'outline-primary'}
+                            onClick={() => handleViewBill(booking)}
+                          >
+                            {booking.hasNewBill ? 'View New Bill' : 'View Bill'}
+                          </Button>
+                          <Button
+                            variant="outline-secondary"
+                            onClick={() => generateBillPDF(booking)}
+                          >
+                            Download Bill
+                          </Button>
+                        </>
+                      )}
+                      {dueAmount > 0 && booking.bookingStatus === 'Approved' && (
+                        <Button variant="success" onClick={() => handlePayNow(booking)}>
+                          Pay Now
+                        </Button>
+                      )}
                       <Button
-                        variant={booking.hasNewBill ? 'primary' : 'outline-primary'}
-                        onClick={() => handleViewBill(booking)}
+                        variant="outline-info"
+                        onClick={() => handleContactAdmin(booking)}
                       >
-                        {booking.hasNewBill ? 'View New Bill' : 'View Bill'}
+                        Contact Admin
                       </Button>
-                      <Button
-                        variant="outline-secondary"
-                        onClick={() => generateBillPDF(booking)}
-                      >
-                        Download Bill
-                      </Button>
-                    </>
-                  )}
-                  {booking.dueAmount > 0 && (
-                    <Button
-                      variant="success"
-                      onClick={() => handlePayNow(booking)}
-                    >
-                      Pay Now
-                    </Button>
-                  )}
-                  <Button
-                    variant="outline-info"
-                    onClick={() => handleContactAdmin(booking)}
-                  >
-                    Contact Admin
-                  </Button>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
+      )}
+
       <UserBillNotification
         show={showBillModal}
         handleClose={() => setShowBillModal(false)}
         bill={
           selectedBooking
             ? {
-                id: selectedBooking.id,
-                eventType: selectedBooking.eventType,
-                eventDate: selectedBooking.eventDate,
+                id: selectedBooking._id,
+                eventType: selectedBooking.eventId?.eventType || 'Event',
+                eventDate: new Date(selectedBooking.eventId?.eventDate).toLocaleDateString(),
                 totalAmount: selectedBooking.totalAmount,
-                breakdown: {
+                breakdown: selectedBooking.priceBreakdown || {
                   venueCharge: selectedBooking.totalAmount * 0.3,
                   cateringCharge: selectedBooking.totalAmount * 0.35,
                   decorationCharge: selectedBooking.totalAmount * 0.2,
@@ -292,6 +299,7 @@ const MyBookings = () => {
             : null
         }
       />
+
       <style jsx="true">{`
         .timeline {
           position: relative;

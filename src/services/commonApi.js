@@ -1,19 +1,34 @@
-import axios from "axios"
+// commonApi.js
+import axios from "axios";
 
 export const commonApi = async (httpRequest, url, reqBody, reqHeader) => {
+  const token = sessionStorage.getItem('token');
+  
   const reqConfig = {
     method: httpRequest,
     url: url,
     data: reqBody,
-    headers: reqHeader
-      ? reqHeader
-      : {
-          "Content-Type": "application/json",
-        },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token}` }),
+      ...reqHeader
+    }
   };
-  return await axios(reqConfig)
-    .then((result) => result)
-    .catch((err) => {
-      return err.response || err;
-    });
+
+  try {
+    const result = await axios(reqConfig);
+    return result;
+  } catch (err) {
+    console.error('API request failed:', err.message);
+    if (err.response?.status === 401) {
+      // Handle token expiration or invalid token
+      sessionStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+    return {
+      error: err,
+      data: { message: err.message || 'Network or server error' },
+      status: err.response?.status || 500,
+    };
+  }
 };
