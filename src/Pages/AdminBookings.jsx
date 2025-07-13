@@ -55,14 +55,16 @@ const AdminBookings = () => {
     setShowModal(true);
   };
 
-  const handleModalClose = (refresh = false) => {
-    setShowModal(false);
-    setSelectedBooking(null);
-    if (refresh) {
-      fetchBookings();
-    }
-  };
-
+ const handleModalClose = (refresh = false) => {
+  setShowModal(false);
+  setSelectedBooking(null);
+  if (refresh) {
+    fetchBookings().catch(err => {
+      console.error('Error refreshing bookings:', err);
+      toast.error('Failed to refresh bookings');
+    });
+  }
+};
   if (loading) {
     return <div className="container mt-5"><p>Loading bookings...</p></div>;
   }

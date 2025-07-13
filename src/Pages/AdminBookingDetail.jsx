@@ -1,32 +1,34 @@
 // frontend/components/AdminBookingDetail.jsx
+import { useNavigate } from 'react-router-dom';
+
 import React, { useState, useEffect } from 'react';
-import { 
-  Modal, 
-  Button, 
-  Badge, 
-  Alert, 
-  Form, 
-  Card,
-  Table
+import {
+    Modal,
+    Button,
+    Badge,
+    Alert,
+    Form,
+    Card,
+    Table
 } from 'react-bootstrap';
 import { updateBookingApi } from '../services/allApi';
 import { toast } from 'react-toastify';
-import { 
-  Calendar, 
-  Palette, 
-  CheckCircle, 
-  Utensils, 
-  Music, 
-  Globe, 
-  DollarSign, 
-  Plus, 
-  X,
-  User,
-  AlertCircle,
-  Download
+import {
+    Calendar,
+    Palette,
+    CheckCircle,
+    Utensils,
+    Music,
+    Globe,
+    DollarSign,
+    Plus,
+    X,
+    User,
+    AlertCircle,
+    Download
 } from 'lucide-react';
-
 const AdminBookingDetail = ({ show, handleClose, booking }) => {
+    const navigate = useNavigate();
     const [adminComment, setAdminComment] = useState('');
     const [bookingStatus, setBookingStatus] = useState(booking?.bookingStatus || 'Pending');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,25 +59,25 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
         if (value === undefined || value === null) return 'Not provided';
 
         if (field === 'date' && value) {
-            return new Date(value).toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+            return new Date(value).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             });
         }
-        
+
         const mappings = {
             type: {
-                wedding: 'Wedding', 
-                birthday: 'Birthday', 
+                wedding: 'Wedding',
+                birthday: 'Birthday',
                 corporate: 'Corporate Event',
                 anniversary: 'Anniversary',
                 conference: 'Conference'
             },
             serviceStyle: {
-                buffet: 'Buffet Style', 
-                plated: 'Plated Service', 
+                buffet: 'Buffet Style',
+                plated: 'Plated Service',
                 familystyle: 'Family Style',
                 foodstations: 'Food Stations',
                 cocktailstyle: 'Cocktail Style'
@@ -130,76 +132,75 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
         }
 
         if (typeof value === 'boolean') return value ? 'Yes' : 'No';
-        
+
         if (Array.isArray(value)) {
             if (value.length === 0) return 'None selected';
             return value.map(item => mappings[field]?.[item] || item).join(', ');
         }
-        
+
         if (field === 'transportation' && typeof value === 'object') {
             const { vehicleType, numberOfVehicles } = value;
-            return vehicleType && numberOfVehicles 
+            return vehicleType && numberOfVehicles
                 ? `${numberOfVehicles} ${vehicleType.charAt(0).toUpperCase() + vehicleType.slice(1)}(s)`
                 : 'Not specified';
         }
-        
+
         if (field === 'accommodation' && typeof value === 'object') {
             const { hotelPreference, numberOfRooms, checkInDate, checkOutDate } = value;
             return hotelPreference || numberOfRooms || checkInDate || checkOutDate
                 ? `${hotelPreference || 'Hotel'} (${numberOfRooms || 'TBD'} rooms, ${checkInDate || 'TBD'} to ${checkOutDate || 'TBD'})`
                 : 'Not specified';
         }
-        
+
         return value || 'Not specified';
     };
 
     const getStatusBadge = (status) => {
         if (!status) return null;
-        
+
         const variants = {
             Pending: 'warning',
             Approved: 'success',
             Rejected: 'danger',
             Cancelled: 'secondary',
         };
-        
+
         return <Badge bg={variants[status]} className="text-capitalize px-3 py-2 fs-6 rounded-pill">{status}</Badge>;
     };
 
-    const handleUpdateBooking = async (newStatus, customRejectReason = '') => {
-        const token = sessionStorage.getItem('token');
-        if (!token) {
-            toast.error('Authentication required. Please log in again.');
-            return;
-        }
+   const handleUpdateBooking = async (newStatus, customRejectReason = '') => {
+  const token = sessionStorage.getItem('token');
+  if (!token) {
+    toast.error('Please log in again.');
+    navigate('/login');
+    return;
+  }
 
-        setIsSubmitting(true);
+  setIsSubmitting(true);
 
-        const payload = {
-            bookingStatus: newStatus,
-            adminComment,
-            rejectReason: newStatus === 'Rejected' ? customRejectReason : booking.rejectReason,
-            paymentStatus: newStatus === 'Approved' ? 'Pending' : booking.paymentStatus,
-            additionalFees,
-            totalEstimate: calculateTotalEstimate()
-        };
-        
-        try {
-            const result = await updateBookingApi(booking._id, payload, token);
-            if (result.status === 200) {
-                toast.success(`Booking successfully updated to ${newStatus}.`);
-                handleClose(true);
-            } else {
-                toast.error(result.response?.data?.message || 'Failed to update booking.');
-            }
-        } catch (err) {
-            console.error('Error updating booking:', err);
-            toast.error('An error occurred. Please try again.');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+  try {
+    const result = await updateBookingApi(booking._id, {
+      bookingStatus: newStatus,
+      adminComment,
+      rejectReason: newStatus === 'Rejected' ? customRejectReason : booking.rejectReason,
+      additionalFees,
+      totalEstimate: calculateTotalEstimate(),
+    }, token);
 
+    if (result.status === 200) {
+      toast.success(`Booking ${newStatus}!`);
+      setBookingStatus(newStatus);
+      handleClose(true); // This triggers the parent to refresh
+    } else {
+      toast.error(result.data?.message || `Failed to ${newStatus.toLowerCase()} booking.`);
+    }
+  } catch (err) {
+    console.error('Update error:', err);
+    toast.error(err.response?.data?.message || `Failed to ${newStatus.toLowerCase()} booking.`);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
     const calculateTotalEstimate = () => {
         const baseEstimate = booking?.totalEstimate || 0;
         const feesTotal = additionalFees.reduce((sum, fee) => sum + (fee.amount || 0), 0);
@@ -215,9 +216,9 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
             toast.warn('Amount must be greater than 0');
             return;
         }
-        
+
         setAdditionalFees([
-            ...additionalFees, 
+            ...additionalFees,
             {
                 ...newFee,
                 dateAdded: new Date().toISOString(),
@@ -407,7 +408,7 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                         </Modal.Title>
                     </Modal.Header>
                 </div>
-                
+
                 <Modal.Body className="p-4" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
                     <Card className="budget-card mb-4 border-0">
                         <Card.Body className="p-4">
@@ -524,9 +525,9 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                                                                 ₹{fee.amount.toLocaleString()}
                                                             </span>
                                                             {isEditable && (
-                                                                <Button 
-                                                                    variant="outline-danger" 
-                                                                    size="sm" 
+                                                                <Button
+                                                                    variant="outline-danger"
+                                                                    size="sm"
                                                                     onClick={() => handleRemoveFee(index)}
                                                                     className="rounded-circle p-2"
                                                                 >
@@ -554,7 +555,7 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                                                         type="text"
                                                         placeholder="Fee description"
                                                         value={newFee.description}
-                                                        onChange={(e) => setNewFee({...newFee, description: e.target.value})}
+                                                        onChange={(e) => setNewFee({ ...newFee, description: e.target.value })}
                                                         className="form-control"
                                                         required
                                                     />
@@ -566,14 +567,14 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                                                         min="1"
                                                         step="0.01"
                                                         value={newFee.amount}
-                                                        onChange={(e) => setNewFee({...newFee, amount: parseFloat(e.target.value) || 0})}
+                                                        onChange={(e) => setNewFee({ ...newFee, amount: parseFloat(e.target.value) || 0 })}
                                                         className="form-control"
                                                         required
                                                     />
                                                 </div>
                                                 <div className="col-md-2">
-                                                    <Button 
-                                                        onClick={handleAddFee} 
+                                                    <Button
+                                                        onClick={handleAddFee}
                                                         className="btn-modern w-100"
                                                         style={{ background: '#4a6bff', color: 'white' }}
                                                     >
@@ -587,7 +588,7 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                             </div>
                         </div>
 
-                       
+
                     </div>
 
                     {!isEditable && (
@@ -601,9 +602,9 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
 
                 <Modal.Footer className="border-0 p-4">
                     <div className="d-flex justify-content-between w-100">
-                        <Button 
-                            variant="outline-secondary" 
-                            onClick={() => handleClose(false)} 
+                        <Button
+                            variant="outline-secondary"
+                            onClick={() => handleClose(false)}
                             disabled={isSubmitting}
                             className="btn-modern"
                         >
@@ -611,8 +612,8 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                         </Button>
                         {isEditable && (
                             <div className="d-flex gap-3">
-                                <Button 
-                                    onClick={() => setShowRejectModal(true)} 
+                                <Button
+                                    onClick={() => setShowRejectModal(true)}
                                     disabled={isSubmitting}
                                     className="btn-modern btn-reject"
                                 >
@@ -623,18 +624,16 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                                     )}
                                     Reject Booking
                                 </Button>
-                                <Button 
-                                    onClick={() => setShowApproveModal(true)} 
+
+                                <Button
+                                    onClick={() => setShowApproveModal(true)}
                                     disabled={isSubmitting}
                                     className="btn-modern btn-approve"
                                 >
-                                    {isSubmitting ? (
-                                        <span className="spinner-border spinner-border-sm me-2" />
-                                    ) : (
-                                        <CheckCircle size={18} className="me-2" />
-                                    )}
-                                    Approve Booking
+                                    <CheckCircle size={18} className="me-2" />
+                                    Confirm Approval
                                 </Button>
+
                             </div>
                         )}
                     </div>
@@ -668,14 +667,14 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                     />
                 </Modal.Body>
                 <Modal.Footer className="border-0 p-4">
-                    <Button 
-                        variant="outline-secondary" 
+                    <Button
+                        variant="outline-secondary"
                         onClick={() => setShowRejectModal(false)}
                         className="btn-modern"
                     >
                         Cancel
                     </Button>
-                    <Button 
+                    <Button
                         onClick={() => {
                             if (!rejectReason.trim()) {
                                 toast.warn('Please provide a rejection reason');
@@ -708,7 +707,7 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                         </div>
                         <h5 className="mb-3">You are about to approve this booking:</h5>
                     </div>
-                    
+
                     <div className="glass-card p-4 mb-4">
                         <div className="row g-3">
                             <div className="col-6">
@@ -737,7 +736,7 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                             </div>
                         </div>
                     </div>
-                    
+
                     <div className="form-check p-3 rounded-3" style={{ background: 'rgba(40, 167, 69, 0.1)' }}>
                         <input
                             className="form-check-input"
@@ -753,8 +752,8 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                 </Modal.Body>
                 <Modal.Footer className="border-0 p-4">
                     <div className="d-flex flex-wrap justify-content-between w-100 gap-3">
-                        <Button 
-                            variant="outline-secondary" 
+                        <Button
+                            variant="outline-secondary"
                             onClick={() => setShowApproveModal(false)}
                             className="btn-modern"
                         >
@@ -762,7 +761,7 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                         </Button>
 
                         <div className="d-flex gap-3">
-                            <Button 
+                            <Button
                                 onClick={() => {
                                     if (!approvalConfirmed) {
                                         toast.warn('Please confirm all details are correct');
@@ -779,7 +778,7 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
 
                             {approvalConfirmed && (
                                 <>
-                                    <Button 
+                                    <Button
                                         onClick={() => {
                                             setShowBillModal(true);
                                             setShowApproveModal(false);
@@ -789,7 +788,7 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                                     >
                                         View Bill
                                     </Button>
-                                    
+
                                 </>
                             )}
                         </div>
@@ -813,34 +812,34 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                             <div className="col-md-6">
                                 <h5 className="fw-bold">Event Details</h5>
                                 <div className="mb-2">
-                                    <span className="text-muted">Event ID:</span> 
+                                    <span className="text-muted">Event ID:</span>
                                     <span className="fw-bold ms-2">#{booking?._id?.slice(-6)?.toUpperCase()}</span>
                                 </div>
                                 <div className="mb-2">
-                                    <span className="text-muted">Type:</span> 
+                                    <span className="text-muted">Type:</span>
                                     <span className="fw-bold ms-2">{getReadableValue('type', transformedBooking.eventType)}</span>
                                 </div>
                                 <div className="mb-2">
-                                    <span className="text-muted">Date:</span> 
+                                    <span className="text-muted">Date:</span>
                                     <span className="fw-bold ms-2">{getReadableValue('date', transformedBooking.eventDate)}</span>
                                 </div>
                                 <div className="mb-2">
-                                    <span className="text-muted">Client:</span> 
+                                    <span className="text-muted">Client:</span>
                                     <span className="fw-bold ms-2">{transformedBooking.client.name}</span>
                                 </div>
                             </div>
                             <div className="col-md-6 text-end">
                                 <h5 className="fw-bold">Payment Summary</h5>
                                 <div className="mb-2">
-                                    <span className="text-muted">Base Estimate:</span> 
+                                    <span className="text-muted">Base Estimate:</span>
                                     <span className="fw-bold ms-2">₹{(booking?.totalEstimate || 0).toLocaleString()}</span>
                                 </div>
                                 <div className="mb-2">
-                                    <span className="text-muted">Additional Fees:</span> 
+                                    <span className="text-muted">Additional Fees:</span>
                                     <span className="fw-bold ms-2">₹{additionalFees.reduce((sum, fee) => sum + (fee.amount || 0), 0).toLocaleString()}</span>
                                 </div>
                                 <div className="mb-2">
-                                    <span className="text-muted">Total Amount:</span> 
+                                    <span className="text-muted">Total Amount:</span>
                                     <span className="fw-bold ms-2 text-success">₹{calculateTotalEstimate().toLocaleString()}</span>
                                 </div>
                             </div>
@@ -885,16 +884,16 @@ const AdminBookingDetail = ({ show, handleClose, booking }) => {
                 </Modal.Body>
                 <Modal.Footer className="border-0 p-4">
                     <div className="d-flex justify-content-between w-100">
-                        <Button 
-                            variant="outline-secondary" 
+                        <Button
+                            variant="outline-secondary"
                             onClick={() => setShowBillModal(false)}
                             className="btn-modern"
                         >
                             Close
                         </Button>
                         <div className="d-flex gap-3">
-                            
-                            <Button 
+
+                            <Button
                                 onClick={() => {
                                     toast.success('Bill sent to client successfully');
                                     setShowBillModal(false);

@@ -14,18 +14,20 @@ const MyBookings = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const result = await getUserBookingsApi();
-        if (result.status === 200) {
-          setBookings(result.data);
-        }
-      } catch (error) {
-        console.error('Error fetching bookings:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+   // In MyBookings.jsx - update the fetchBookings function
+const fetchBookings = async () => {
+  try {
+    const token = sessionStorage.getItem('token');
+    const result = await getUserBookingsApi(token);
+    if (result.status === 200) {
+      setBookings(result.data);
+    }
+  } catch (error) {
+    console.error('Error fetching bookings:', error);
+  } finally {
+    setLoading(false);
+  }
+};
     fetchBookings();
   }, []);
 
